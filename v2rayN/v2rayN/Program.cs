@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Security.Cryptography;
+using System.Text;
 using System.Threading;
 using System.Windows.Forms;
 using v2rayN.Forms;
@@ -77,12 +79,13 @@ namespace v2rayN
         /// </summary> 
         public static bool IsDuplicateInstance()
         {
-            //string name = "v2rayN";
-
             string name = Utils.GetExePath(); // Allow different locations to run
-            name = name.Replace("\\", "/"); // https://stackoverflow.com/questions/20714120/could-not-find-a-part-of-the-path-error-while-creating-mutex
 
-            Global.mutexObj = new Mutex(false, name, out bool bCreatedNew);
+            MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
+            byte[] bytes = Encoding.UTF8.GetBytes(name);
+            string result = BitConverter.ToString(md5.ComputeHash(bytes)).Replace("-", "");
+
+            Global.mutexObj = new Mutex(false, result, out bool bCreatedNew);
             return !bCreatedNew;
         }
 

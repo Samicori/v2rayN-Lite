@@ -6,6 +6,7 @@ using v2rayN.Mode;
 using v2rayN.Base;
 using System.Linq;
 using v2rayN.Tool;
+using System.Net.NetworkInformation;
 
 namespace v2rayN.Handler
 {
@@ -121,10 +122,7 @@ namespace v2rayN.Handler
             }
             if (config.uiItem == null)
             {
-                config.uiItem = new UIItem()
-                {
-                    enableAutoAdjustMainLvColWidth = true
-                };
+                config.uiItem = new UIItem();
             }
             if (config.uiItem.mainLvColWidth == null)
             {
@@ -175,15 +173,9 @@ namespace v2rayN.Handler
                 {
                     VmessItem vmessItem = config.vmess[i];
                     UpgradeServerVersion(ref vmessItem);
-
-                    if (Utils.IsNullOrEmpty(vmessItem.indexId))
-                    {
-                        vmessItem.indexId = Utils.GetGUID(false);
-                    }
                 }
             }
 
-            LazyConfig.Instance.SetConfig(ref config);
             return 0;
         }
 
@@ -200,6 +192,7 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int AddServer(ref Config config, VmessItem vmessItem, int index, bool toFile = true)
         {
+            vmessItem.configVersion = 2;
             vmessItem.configType = (int)EConfigType.Vmess;
 
             vmessItem.address = vmessItem.address.TrimEx();
@@ -211,23 +204,34 @@ namespace v2rayN.Handler
             vmessItem.path = vmessItem.path.TrimEx();
             vmessItem.streamSecurity = vmessItem.streamSecurity.TrimEx();
 
-            if (!Global.vmessSecuritys.Contains(vmessItem.security))
-            {
-                return -1;
-            }
-
             if (index >= 0)
-            {
-                //修改
+            {// update
+
+                vmessItem.locaPort = GetAvailablePort(config.vmess.Select(_ => _.locaPort).ToArray(), config.vmess[index].locaPort);
+
                 config.vmess[index] = vmessItem;
+
                 if (config.index.Equals(index))
                 {
                     Global.reloadV2ray = true;
                 }
             }
             else
-            {
-                AddServerCommon(ref config, vmessItem);
+            {// add
+
+                // 分配localport
+                vmessItem.locaPort = GetAvailablePort(config.vmess.Select(_ => _.locaPort).ToArray());
+
+                if (Utils.IsNullOrEmpty(vmessItem.allowInsecure))
+                {
+                    vmessItem.allowInsecure = config.defAllowInsecure.ToString();
+                }
+                config.vmess.Add(vmessItem);
+                if (config.vmess.Count == 1)
+                {
+                    config.index = 0;
+                    Global.reloadV2ray = true;
+                }
             }
 
             if (toFile)
@@ -245,8 +249,12 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int RemoveServer(ref Config config, List<int> indexs)
         {
-            var indexId = config.indexId();
+            var itemId = config.getItemId();
 
+            // stop first
+            StopServer(ref config, indexs);
+
+            // remove
             for (int k = indexs.Count - 1; k >= 0; k--)
             {
                 var index = indexs[k];
@@ -255,10 +263,32 @@ namespace v2rayN.Handler
                     continue;
                 }
 
+                var server = config.vmess[index];
+
+                // remove server config
                 config.vmess.RemoveAt(index);
+
+                //todo: dont remove working server, & send message to ui.
             }
 
-            SetIndex(ref config, indexId);
+            // ???? 干吗用的？
+            var index_ = config.vmess.FindIndex(it => it.getItemId() == itemId);
+            if (index_ >= 0)
+            {
+                config.index = index_;
+            }
+            else
+            {
+                if (config.vmess.Count > 0)
+                {
+                    config.index = 0;
+                }
+                else
+                {
+                    config.index = -1;
+                }
+            }
+            Global.reloadV2ray = true;
 
             ToJsonFile(config);
 
@@ -283,6 +313,7 @@ namespace v2rayN.Handler
                 configVersion = config.vmess[index].configVersion,
                 address = config.vmess[index].address,
                 port = config.vmess[index].port,
+                locaPort = GetAvailablePort(config.vmess.Select(_ => _.locaPort).ToArray()),
                 id = config.vmess[index].id,
                 alterId = config.vmess[index].alterId,
                 security = config.vmess[index].security,
@@ -298,8 +329,7 @@ namespace v2rayN.Handler
                 sni = config.vmess[index].sni
             };
 
-            //config.vmess.Insert(index + 1, vmessItem); // 插入到下一项
-            AddServerCommon(ref config, vmessItem);
+            config.vmess.Insert(index + 1, vmessItem); // 插入到下一项
 
             ToJsonFile(config);
 
@@ -327,6 +357,114 @@ namespace v2rayN.Handler
             config.index = index;
             Global.reloadV2ray = true;
 
+            ToJsonFile(config);
+
+            return 0;
+        }
+
+
+        public static int SetActiveServer(ref Config config, List<int> indexs)
+        {
+            for (int k = indexs.Count - 1; k >= 0; k--)
+            {
+                var index = indexs[k];
+                if (index < 0 || index > config.vmess.Count - 1)
+                {
+                    return -1;
+                }
+
+                var proxy = config.vmess[index];
+
+                // 检查port是否可用
+                var ingorePorts = config.vmess.Select(_ => _.locaPort).ToList();
+                // 忽略列表里移除自己
+                ingorePorts.Remove(proxy.locaPort);
+                proxy.locaPort = GetAvailablePort(ingorePorts.ToArray(), proxy.locaPort); ;
+
+                // 设置入站socks规则
+                var inItem = new InItem
+                {
+                    tag = $"socks@{proxy.symbol}",
+                    protocol = Global.InboundSocks,
+                    localPort = proxy.locaPort,
+                    udpEnabled = true,
+                    sniffingEnabled = true
+                };
+                config.inbound.Add(inItem);
+
+                // 设置出站规则
+                var outItem = new OutItem
+                {
+                    tag = $"proxy@{proxy.symbol}",
+                    protocol = ((EConfigType)proxy.configType).ToString(),
+                    serverSymbol = proxy.symbol,
+                };
+                if (config.outbounds == null)
+                    config.outbounds = new List<OutItem>();
+                config.outbounds.Add(outItem);
+
+                // 设置routing
+                config.enableRoutingAdvanced = true;
+                var zRouting = config.routings.FirstOrDefault(_ => _.remarks == "Z_ROUTING");
+                if (zRouting == null)
+                {
+                    zRouting = new RoutingItem
+                    {
+                        remarks = "Z_ROUTING",
+                        rules = new List<RulesItem>()
+                    };
+                    config.routings.Add(zRouting);
+                };
+                config.routingIndex = config.routings.IndexOf(zRouting);
+
+                var ruleItem = new RulesItem
+                {
+                    type = "field",
+                    inboundTag = new List<string>(),
+                    outboundTag = outItem.tag
+                };
+                ruleItem.inboundTag.Add(inItem.tag);
+
+                zRouting.rules.Add(ruleItem);
+            }
+
+            Global.reloadV2ray = true;
+            ToJsonFile(config);
+
+            return 0;
+        }
+
+        public static int StopServer(ref Config config, List<int> indexs)
+        {
+            // remove
+            for (int k = indexs.Count - 1; k >= 0; k--)
+            {
+                var index = indexs[k];
+                if (index < 0 || index > config.vmess.Count - 1)
+                {
+                    return -1;
+                }
+
+                var server = config.vmess[index];
+
+                // remove inbound
+                var inboundIndex = config.inbound.FindIndex(_ => _.tag.Contains(server.symbol));
+                if (inboundIndex >= 0) config.inbound.RemoveAt(inboundIndex);
+
+                // remove outbound
+                var outboundIndex = config.outbounds.FindIndex(_ => _.tag.Contains(server.symbol));
+                if (outboundIndex >= 0) config.outbounds.RemoveAt(outboundIndex);
+
+                // remove routing
+                var zRouting = config.routings.FirstOrDefault(_ => _.remarks == "Z_ROUTING");
+                if (zRouting != null)
+                {
+                    var ruleIndex = zRouting.rules.FindIndex(_ => _.outboundTag.Contains(server.symbol));
+                    if (ruleIndex >= 0) zRouting.rules.RemoveAt(ruleIndex);
+                }
+
+            }
+            Global.reloadV2ray = true;
             ToJsonFile(config);
 
             return 0;
@@ -534,13 +672,14 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int AddShadowsocksServer(ref Config config, VmessItem vmessItem, int index, bool toFile = true)
         {
+            vmessItem.configVersion = 2;
             vmessItem.configType = (int)EConfigType.Shadowsocks;
 
             vmessItem.address = vmessItem.address.TrimEx();
             vmessItem.id = vmessItem.id.TrimEx();
             vmessItem.security = vmessItem.security.TrimEx();
 
-            if (!config.GetShadowsocksSecuritys().Contains(vmessItem.security))
+            if (!Global.ssSecuritys.Contains(vmessItem.security))
             {
                 return -1;
             }
@@ -548,6 +687,8 @@ namespace v2rayN.Handler
             if (index >= 0)
             {
                 //修改
+                vmessItem.locaPort = GetAvailablePort(config.vmess.Select(_ => _.locaPort).ToArray(), config.vmess[index].locaPort);
+
                 config.vmess[index] = vmessItem;
                 if (config.index.Equals(index))
                 {
@@ -556,7 +697,15 @@ namespace v2rayN.Handler
             }
             else
             {
-                AddServerCommon(ref config, vmessItem);
+                //添加
+                vmessItem.locaPort = GetAvailablePort(config.vmess.Select(_ => _.locaPort).ToArray());
+
+                config.vmess.Add(vmessItem);
+                if (config.vmess.Count == 1)
+                {
+                    config.index = 0;
+                    Global.reloadV2ray = true;
+                }
             }
 
             if (toFile)
@@ -576,6 +725,7 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int AddSocksServer(ref Config config, VmessItem vmessItem, int index, bool toFile = true)
         {
+            vmessItem.configVersion = 2;
             vmessItem.configType = (int)EConfigType.Socks;
 
             vmessItem.address = vmessItem.address.TrimEx();
@@ -583,6 +733,8 @@ namespace v2rayN.Handler
             if (index >= 0)
             {
                 //修改
+                vmessItem.locaPort = GetAvailablePort(config.vmess.Select(_ => _.locaPort).ToArray(), config.vmess[index].locaPort);
+
                 config.vmess[index] = vmessItem;
                 if (config.index.Equals(index))
                 {
@@ -591,7 +743,15 @@ namespace v2rayN.Handler
             }
             else
             {
-                AddServerCommon(ref config, vmessItem);
+                //添加
+                vmessItem.locaPort = GetAvailablePort(config.vmess.Select(_ => _.locaPort).ToArray());
+
+                config.vmess.Add(vmessItem);
+                if (config.vmess.Count == 1)
+                {
+                    config.index = 0;
+                    Global.reloadV2ray = true;
+                }
             }
 
             if (toFile)
@@ -612,6 +772,7 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int AddTrojanServer(ref Config config, VmessItem vmessItem, int index, bool toFile = true)
         {
+            vmessItem.configVersion = 2;
             vmessItem.configType = (int)EConfigType.Trojan;
 
             vmessItem.address = vmessItem.address.TrimEx();
@@ -628,6 +789,8 @@ namespace v2rayN.Handler
             if (index >= 0)
             {
                 //修改
+                vmessItem.locaPort = GetAvailablePort(config.vmess.Select(_ => _.locaPort).ToArray(), config.vmess[index].locaPort);
+
                 config.vmess[index] = vmessItem;
                 if (config.index.Equals(index))
                 {
@@ -636,7 +799,15 @@ namespace v2rayN.Handler
             }
             else
             {
-                AddServerCommon(ref config, vmessItem);
+                //添加
+                vmessItem.locaPort = GetAvailablePort(config.vmess.Select(_ => _.locaPort).ToArray());
+
+                config.vmess.Add(vmessItem);
+                if (config.vmess.Count == 1)
+                {
+                    config.index = 0;
+                    Global.reloadV2ray = true;
+                }
             }
 
             if (toFile)
@@ -725,15 +896,6 @@ namespace v2rayN.Handler
             {
                 return -1;
             }
-
-            var indexId = config.indexId();
-            //copy sub items
-            List<VmessItem> lstOriSub = null;
-            if (!Utils.IsNullOrEmpty(subid))
-            {
-                lstOriSub = config.vmess.Where(it => it.subid == subid).ToList();
-                RemoveServerViaSubid(ref config, subid);
-            }
             //if (clipboardData.IndexOf("vmess") >= 0 && clipboardData.IndexOf("vmess") == clipboardData.LastIndexOf("vmess"))
             //{
             //    clipboardData = clipboardData.Replace("\r\n", "").Replace("\n", "");
@@ -745,7 +907,7 @@ namespace v2rayN.Handler
             foreach (string str in arrData)
             {
                 //maybe sub
-                if (Utils.IsNullOrEmpty(subid) && (str.StartsWith(Global.httpsProtocol) || str.StartsWith(Global.httpProtocol)))
+                if (str.StartsWith(Global.httpsProtocol) || str.StartsWith(Global.httpProtocol))
                 {
                     if (AddSubItem(ref config, str) == 0)
                     {
@@ -758,18 +920,7 @@ namespace v2rayN.Handler
                 {
                     continue;
                 }
-
-                //exist sub items
-                if (!Utils.IsNullOrEmpty(subid))
-                {
-                    var existItem = lstOriSub?.FirstOrDefault(t => CompareVmessItem(t, vmessItem, true));
-                    if (existItem != null)
-                    {
-                        vmessItem = existItem;
-                    }
-                    vmessItem.subid = subid;
-                }
-
+                vmessItem.subid = subid;
                 if (vmessItem.configType == (int)EConfigType.Vmess)
                 {
                     if (AddServer(ref config, vmessItem, -1, false) == 0)
@@ -806,9 +957,6 @@ namespace v2rayN.Handler
                     }
                 }
             }
-
-            SetIndex(ref config, indexId);
-
             ToJsonFile(config);
             return countServers;
         }
@@ -822,9 +970,12 @@ namespace v2rayN.Handler
         public static int AddSubItem(ref Config config, string url)
         {
             //already exists
-            if (config.subItem.FindIndex(e => e.url == url) >= 0)
+            foreach (SubItem sub in config.subItem)
             {
-                return 0;
+                if (url == sub.url)
+                {
+                    return 0;
+                }
             }
 
             SubItem subItem = new SubItem
@@ -854,7 +1005,7 @@ namespace v2rayN.Handler
             {
                 if (Utils.IsNullOrEmpty(sub.id))
                 {
-                    sub.id = Utils.GetGUID(false);
+                    sub.id = Utils.GetGUID();
                 }
             }
 
@@ -870,20 +1021,18 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int RemoveServerViaSubid(ref Config config, string subid)
         {
-            var indexId = config.indexId();
             if (Utils.IsNullOrEmpty(subid) || config.vmess.Count <= 0)
             {
                 return -1;
             }
             for (int k = config.vmess.Count - 1; k >= 0; k--)
             {
-                if (config.vmess[k].subid.Equals(subid))
+                if (config.vmess[k].subid == subid)
                 {
+                    StopServer(ref config, new List<int> { k });
                     config.vmess.RemoveAt(k);
                 }
             }
-
-            SetIndex(ref config, indexId);
 
             ToJsonFile(config);
             return 0;
@@ -914,8 +1063,7 @@ namespace v2rayN.Handler
                 default:
                     return -1;
             }
-
-            var indexId = config.indexId();
+            string itemId = config.getItemId();
             var items = config.vmess.AsQueryable();
 
             if (asc)
@@ -927,7 +1075,11 @@ namespace v2rayN.Handler
                 config.vmess = items.OrderByDescending(propertyName).ToList();
             }
 
-            SetIndex(ref config, indexId);
+            var index_ = config.vmess.FindIndex(it => it.getItemId() == itemId);
+            if (index_ >= 0)
+            {
+                config.index = index_;
+            }
 
             ToJsonFile(config);
             return 0;
@@ -942,6 +1094,7 @@ namespace v2rayN.Handler
         /// <returns></returns>
         public static int AddVlessServer(ref Config config, VmessItem vmessItem, int index, bool toFile = true)
         {
+            vmessItem.configVersion = 2;
             vmessItem.configType = (int)EConfigType.VLESS;
 
             vmessItem.address = vmessItem.address.TrimEx();
@@ -956,6 +1109,8 @@ namespace v2rayN.Handler
             if (index >= 0)
             {
                 //修改
+                vmessItem.locaPort = GetAvailablePort(config.vmess.Select(_ => _.locaPort).ToArray(), config.vmess[index].locaPort);
+
                 config.vmess[index] = vmessItem;
                 if (config.index.Equals(index))
                 {
@@ -964,7 +1119,19 @@ namespace v2rayN.Handler
             }
             else
             {
-                AddServerCommon(ref config, vmessItem);
+                //添加
+                vmessItem.locaPort = GetAvailablePort(config.vmess.Select(_ => _.locaPort).ToArray());
+
+                if (Utils.IsNullOrEmpty(vmessItem.allowInsecure))
+                {
+                    vmessItem.allowInsecure = config.defAllowInsecure.ToString();
+                }
+                config.vmess.Add(vmessItem);
+                if (config.vmess.Count == 1)
+                {
+                    config.index = 0;
+                    Global.reloadV2ray = true;
+                }
             }
 
             if (toFile)
@@ -977,17 +1144,33 @@ namespace v2rayN.Handler
 
         public static int DedupServerList(ref Config config)
         {
-            var indexId = config.indexId();
+            var itemId = config.getItemId();
 
-            List<VmessItem> source = config.vmess;
+            List<Mode.VmessItem> source = config.vmess;
             bool keepOlder = config.keepOlderDedupl;
 
-            List<VmessItem> list = new List<VmessItem>();
+            List<Mode.VmessItem> list = new List<Mode.VmessItem>();
             if (!keepOlder) source.Reverse(); // Remove the early items first
 
-            foreach (VmessItem item in source)
+            bool _isAdded(Mode.VmessItem o, Mode.VmessItem n)
             {
-                if (!list.Exists(i => CompareVmessItem(i, item, false)))
+                return o.configVersion == n.configVersion &&
+                    o.configType == n.configType &&
+                    o.address == n.address &&
+                    o.port == n.port &&
+                    o.id == n.id &&
+                    o.alterId == n.alterId &&
+                    o.security == n.security &&
+                    o.network == n.network &&
+                    o.headerType == n.headerType &&
+                    o.requestHost == n.requestHost &&
+                    o.path == n.path &&
+                    o.streamSecurity == n.streamSecurity;
+                // skip (will remove) different remarks
+            }
+            foreach (Mode.VmessItem item in source)
+            {
+                if (!list.Exists(i => _isAdded(i, item)))
                 {
                     list.Add(item);
                 }
@@ -995,45 +1178,8 @@ namespace v2rayN.Handler
             if (!keepOlder) list.Reverse();
             config.vmess = list;
 
-            SetIndex(ref config, indexId);
-
-            return 0;
-        }
-
-        public static int AddServerCommon(ref Config config, VmessItem vmessItem)
-        {
-            if (Utils.IsNullOrEmpty(vmessItem.indexId))
-            {
-                vmessItem.indexId = Utils.GetGUID(false);
-            }
-            vmessItem.configVersion = 2;
-            if (Utils.IsNullOrEmpty(vmessItem.allowInsecure))
-            {
-                vmessItem.allowInsecure = config.defAllowInsecure.ToString();
-            }
-            if (!Utils.IsNullOrEmpty(vmessItem.network) && !Global.networks.Contains(vmessItem.network))
-            {
-                vmessItem.network = Global.DefaultNetwork;
-            }
-
-            config.vmess.Add(vmessItem);
-            if (config.vmess.Count == 1)
-            {
-                config.index = 0;
-                Global.reloadV2ray = true;
-            }
-            return 0;
-        }
-
-        public static int SetIndex(ref Config config, string indexId)
-        {
-            var index_ = config.FindIndexId(indexId);
-
-            if (config.index == index_)
-            {
-                return 0;
-            }
-            else if (index_ >= 0)
+            var index_ = config.vmess.FindIndex(it => it.getItemId() == itemId);
+            if (index_ >= 0)
             {
                 config.index = index_;
             }
@@ -1049,30 +1195,8 @@ namespace v2rayN.Handler
                 }
             }
             Global.reloadV2ray = true;
+
             return 0;
-        }
-
-        private static bool CompareVmessItem(VmessItem o, VmessItem n, bool remarks)
-        {
-            if (o == null || n == null)
-            {
-                return false;
-            }
-
-            return o.configVersion == n.configVersion
-                && o.configType == n.configType
-                && o.address == n.address
-                && o.port == n.port
-                && o.id == n.id
-                && o.alterId == n.alterId
-                && o.security == n.security
-                && o.network == n.network
-                && o.headerType == n.headerType
-                && o.requestHost == n.requestHost
-                && o.path == n.path
-                && o.streamSecurity == n.streamSecurity
-                && o.flow == n.flow
-                && (remarks ? o.remarks == n.remarks : true);
         }
 
         #endregion
@@ -1154,13 +1278,6 @@ namespace v2rayN.Handler
             else
             {
                 config.routings.Add(item);
-                int indexLocked = config.routings.FindIndex(it => it.locked == true);
-                if (indexLocked != -1)
-                {
-                    var itemLocked = Utils.DeepCopy(config.routings[indexLocked]);
-                    config.routings.RemoveAt(indexLocked);
-                    config.routings.Add(itemLocked);
-                }
             }
             ToJsonFile(config);
 
@@ -1352,6 +1469,49 @@ namespace v2rayN.Handler
                 return null;
             }
             return config.routings.Find(it => it.locked == true);
+        }
+        #endregion
+
+        #region private
+
+        private static int GetAvailablePort(int[] ingores, int startWith = 16600)
+        {
+            int port = startWith == 0 ? 16600 : startWith;
+
+            while (port != 65535)
+            {
+                // do ingore
+                if (ingores.Contains(port))
+                {
+                    port++;
+                    continue;
+                }
+
+                if (CheckPortAvailable(port)) break;
+                else
+                {
+                    port++;
+                    continue;
+                }
+            }
+
+            return port;
+        }
+
+        private static bool CheckPortAvailable(int port)
+        {
+            IPGlobalProperties ipProperties = IPGlobalProperties.GetIPGlobalProperties();
+            TcpConnectionInformation[] tcpConnInfoArray = ipProperties.GetActiveTcpConnections();
+
+            foreach (TcpConnectionInformation tcpi in tcpConnInfoArray)
+            {
+                if (tcpi.LocalEndPoint.Port == port)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
         #endregion
     }

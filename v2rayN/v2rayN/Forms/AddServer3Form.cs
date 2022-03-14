@@ -15,7 +15,6 @@ namespace v2rayN.Forms
 
         private void AddServer3Form_Load(object sender, EventArgs e)
         {
-            cmbSecurity.Items.AddRange(config.GetShadowsocksSecuritys().ToArray());
             if (EditIndex >= 0)
             {
                 vmessItem = config.vmess[EditIndex];
@@ -36,6 +35,7 @@ namespace v2rayN.Forms
 
             txtAddress.Text = vmessItem.address;
             txtPort.Text = vmessItem.port.ToString();
+            txtLocalPort.Text = vmessItem.locaPort.ToString();
             txtId.Text = vmessItem.id;
             cmbSecurity.Text = vmessItem.security;
             txtRemarks.Text = vmessItem.remarks;
@@ -58,6 +58,7 @@ namespace v2rayN.Forms
         {
             string address = txtAddress.Text;
             string port = txtPort.Text;
+            string localPort = txtLocalPort.Text;
             string id = txtId.Text;
             string security = cmbSecurity.Text;
             string remarks = txtRemarks.Text;
@@ -68,6 +69,11 @@ namespace v2rayN.Forms
                 return;
             }
             if (Utils.IsNullOrEmpty(port) || !Utils.IsNumberic(port))
+            {
+                UI.Show(UIRes.I18N("FillCorrectServerPort"));
+                return;
+            }
+            if (Utils.IsNullOrEmpty(localPort) || !Utils.IsNumberic(localPort))
             {
                 UI.Show(UIRes.I18N("FillCorrectServerPort"));
                 return;
@@ -85,6 +91,7 @@ namespace v2rayN.Forms
 
             vmessItem.address = address;
             vmessItem.port = Utils.ToInt(port);
+            vmessItem.locaPort = Utils.ToInt(localPort);
             vmessItem.id = id;
             vmessItem.security = security;
             vmessItem.remarks = remarks;

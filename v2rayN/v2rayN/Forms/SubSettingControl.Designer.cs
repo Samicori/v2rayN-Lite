@@ -46,7 +46,6 @@
             // 
             // grbMain
             // 
-            resources.ApplyResources(this.grbMain, "grbMain");
             this.grbMain.Controls.Add(this.txtUserAgent);
             this.grbMain.Controls.Add(this.label1);
             this.grbMain.Controls.Add(this.btnShare);
@@ -56,6 +55,7 @@
             this.grbMain.Controls.Add(this.txtRemarks);
             this.grbMain.Controls.Add(this.label2);
             this.grbMain.Controls.Add(this.label3);
+            resources.ApplyResources(this.grbMain, "grbMain");
             this.grbMain.Name = "grbMain";
             this.grbMain.TabStop = false;
             // 

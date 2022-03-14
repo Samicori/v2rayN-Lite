@@ -19,7 +19,7 @@ namespace v2rayN.Resx {
     // 类通过类似于 ResGen 或 Visual Studio 的工具自动生成的。
     // 若要添加或移除成员，请编辑 .ResX 文件，然后重新运行 ResGen
     // (以 /str 作为命令选项)，或重新生成 VS 项目。
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class ResUI {
@@ -187,6 +187,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Please fill in the correct format extra ID 的本地化字符串。
+        /// </summary>
+        internal static string FillCorrectAlterId {
+            get {
+                return ResourceManager.GetString("FillCorrectAlterId", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Please fill in the correct custom DNS 的本地化字符串。
         /// </summary>
         internal static string FillCorrectDNSText {
@@ -322,6 +331,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 Auto 的本地化字符串。
+        /// </summary>
+        internal static string LvAuto {
+            get {
+                return ResourceManager.GetString("LvAuto", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Count 的本地化字符串。
         /// </summary>
         internal static string LvCount {
@@ -345,6 +363,15 @@ namespace v2rayN.Resx {
         internal static string LvEncryptionMethod {
             get {
                 return ResourceManager.GetString("LvEncryptionMethod", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Local Port 的本地化字符串。
+        /// </summary>
+        internal static string LvLocalPort {
+            get {
+                return ResourceManager.GetString("LvLocalPort", resourceCulture);
             }
         }
         
@@ -772,24 +799,6 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
-        ///   查找类似 Global hotkey {0} registered failed, reason {1} 的本地化字符串。
-        /// </summary>
-        internal static string RegisterGlobalHotkeyFailed {
-            get {
-                return ResourceManager.GetString("RegisterGlobalHotkeyFailed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 Global hotkey {0} registered successfully 的本地化字符串。
-        /// </summary>
-        internal static string RegisterGlobalHotkeySuccessfully {
-            get {
-                return ResourceManager.GetString("RegisterGlobalHotkeySuccessfully", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 Servers deduplication completed. Old: {0}, New: {1}. 的本地化字符串。
         /// </summary>
         internal static string RemoveDuplicateServerResult {
@@ -840,6 +849,15 @@ namespace v2rayN.Resx {
         internal static string SaveServerConfigurationIn {
             get {
                 return ResourceManager.GetString("SaveServerConfigurationIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Servers: {0}  Active: {1} 的本地化字符串。
+        /// </summary>
+        internal static string ServerState {
+            get {
+                return ResourceManager.GetString("ServerState", resourceCulture);
             }
         }
         
@@ -994,15 +1012,6 @@ namespace v2rayN.Resx {
         internal static string TransportPathTip4 {
             get {
                 return ResourceManager.GetString("TransportPathTip4", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 *Kcp seed 的本地化字符串。
-        /// </summary>
-        internal static string TransportPathTip5 {
-            get {
-                return ResourceManager.GetString("TransportPathTip5", resourceCulture);
             }
         }
         

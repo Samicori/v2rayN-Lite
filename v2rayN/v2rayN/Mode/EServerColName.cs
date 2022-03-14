@@ -13,6 +13,7 @@ namespace v2rayN.Mode
         streamSecurity,
         subRemarks,
         testResult,
+        localPort,
 
         todayDown,
         todayUp,

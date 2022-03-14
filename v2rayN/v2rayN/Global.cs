@@ -29,14 +29,9 @@ namespace v2rayN
 
 
         /// <summary>
-        /// PromotionUrl
-        /// </summary>
-        public const string PromotionUrl = @"aHR0cHM6Ly85LjIzNDQ1Ni54eXovYWJjLmh0bWw=";
-
-        /// <summary>
         /// 本软件配置文件名
         /// </summary>
-        public const string ConfigFileName = "guiNConfig.json";
+        public const string ConfigFileName = "v2rayN.json";
 
         /// <summary>
         /// v2ray配置文件名
@@ -175,7 +170,10 @@ namespace v2rayN
         /// Language
         /// </summary>
         public const string MyRegKeyLanguage = "CurrentLanguage";
-       
+        /// <summary>
+        /// 
+        /// </summary>
+        public const string MyRegKeySecurityProtocolTls13 = "SecurityProtocolTls13";
         /// <summary>
         /// Icon
         /// </summary>
@@ -202,7 +200,7 @@ namespace v2rayN
 
         public const string GrpcgunMode = "gun";
         public const string GrpcmultiMode = "multi";
-
+        
         #endregion
 
         #region 全局变量

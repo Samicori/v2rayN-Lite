@@ -34,26 +34,10 @@
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.chkdefAllowInsecure = new System.Windows.Forms.CheckBox();
-            this.chksniffingEnabled2 = new System.Windows.Forms.CheckBox();
-            this.chksniffingEnabled = new System.Windows.Forms.CheckBox();
             this.chkmuxEnabled = new System.Windows.Forms.CheckBox();
-            this.chkAllowIn2 = new System.Windows.Forms.CheckBox();
-            this.chkudpEnabled2 = new System.Windows.Forms.CheckBox();
-            this.cmbprotocol2 = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.txtlocalPort2 = new System.Windows.Forms.TextBox();
-            this.cmbprotocol = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this.chkudpEnabled = new System.Windows.Forms.CheckBox();
             this.chklogEnabled = new System.Windows.Forms.CheckBox();
             this.cmbloglevel = new System.Windows.Forms.ComboBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.txtlocalPort = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.linkDnsObjectDoc = new System.Windows.Forms.LinkLabel();
-            this.txtremoteDNS = new System.Windows.Forms.TextBox();
-            this.label14 = new System.Windows.Forms.Label();
             this.tabPage6 = new System.Windows.Forms.TabPage();
             this.chkKcpcongestion = new System.Windows.Forms.CheckBox();
             this.txtKcpwriteBufferSize = new System.Windows.Forms.TextBox();
@@ -69,9 +53,6 @@
             this.txtKcpmtu = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.tabPage7 = new System.Windows.Forms.TabPage();
-            this.chkEnableSecurityProtocolTls13 = new System.Windows.Forms.CheckBox();
-            this.chkEnableAutoAdjustMainLvColWidth = new System.Windows.Forms.CheckBox();
-            this.btnSetLoopback = new System.Windows.Forms.Button();
             this.txtautoUpdateInterval = new System.Windows.Forms.TextBox();
             this.label15 = new System.Windows.Forms.Label();
             this.chkIgnoreGeoUpdateCore = new System.Windows.Forms.CheckBox();
@@ -83,71 +64,49 @@
             this.chkEnableStatistics = new System.Windows.Forms.CheckBox();
             this.chkAllowLANConn = new System.Windows.Forms.CheckBox();
             this.chkAutoRun = new System.Windows.Forms.CheckBox();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.label13 = new System.Windows.Forms.Label();
-            this.label12 = new System.Windows.Forms.Label();
-            this.txtsystemProxyExceptions = new System.Windows.Forms.TextBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnOK = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            this.tabPage2.SuspendLayout();
             this.tabPage6.SuspendLayout();
             this.tabPage7.SuspendLayout();
-            this.tabPage3.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnClose
             // 
-            resources.ApplyResources(this.btnClose, "btnClose");
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            resources.ApplyResources(this.btnClose, "btnClose");
             this.btnClose.Name = "btnClose";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // tabControl1
             // 
-            resources.ApplyResources(this.tabControl1, "tabControl1");
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage6);
             this.tabControl1.Controls.Add(this.tabPage7);
-            this.tabControl1.Controls.Add(this.tabPage3);
+            this.tabControl1.Controls.Add(this.tabPage1);
+            this.tabControl1.Controls.Add(this.tabPage6);
+            resources.ApplyResources(this.tabControl1, "tabControl1");
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             // 
             // tabPage1
             // 
-            resources.ApplyResources(this.tabPage1, "tabPage1");
             this.tabPage1.Controls.Add(this.groupBox1);
+            resources.ApplyResources(this.tabPage1, "tabPage1");
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // groupBox1
             // 
-            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Controls.Add(this.chkdefAllowInsecure);
-            this.groupBox1.Controls.Add(this.chksniffingEnabled2);
-            this.groupBox1.Controls.Add(this.chksniffingEnabled);
             this.groupBox1.Controls.Add(this.chkmuxEnabled);
-            this.groupBox1.Controls.Add(this.chkAllowIn2);
-            this.groupBox1.Controls.Add(this.chkudpEnabled2);
-            this.groupBox1.Controls.Add(this.cmbprotocol2);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.txtlocalPort2);
-            this.groupBox1.Controls.Add(this.cmbprotocol);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.chkudpEnabled);
             this.groupBox1.Controls.Add(this.chklogEnabled);
             this.groupBox1.Controls.Add(this.cmbloglevel);
             this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.txtlocalPort);
-            this.groupBox1.Controls.Add(this.label2);
+            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
@@ -157,77 +116,11 @@
             this.chkdefAllowInsecure.Name = "chkdefAllowInsecure";
             this.chkdefAllowInsecure.UseVisualStyleBackColor = true;
             // 
-            // chksniffingEnabled2
-            // 
-            resources.ApplyResources(this.chksniffingEnabled2, "chksniffingEnabled2");
-            this.chksniffingEnabled2.Name = "chksniffingEnabled2";
-            this.chksniffingEnabled2.UseVisualStyleBackColor = true;
-            // 
-            // chksniffingEnabled
-            // 
-            resources.ApplyResources(this.chksniffingEnabled, "chksniffingEnabled");
-            this.chksniffingEnabled.Name = "chksniffingEnabled";
-            this.chksniffingEnabled.UseVisualStyleBackColor = true;
-            // 
             // chkmuxEnabled
             // 
             resources.ApplyResources(this.chkmuxEnabled, "chkmuxEnabled");
             this.chkmuxEnabled.Name = "chkmuxEnabled";
             this.chkmuxEnabled.UseVisualStyleBackColor = true;
-            // 
-            // chkAllowIn2
-            // 
-            resources.ApplyResources(this.chkAllowIn2, "chkAllowIn2");
-            this.chkAllowIn2.Name = "chkAllowIn2";
-            this.chkAllowIn2.UseVisualStyleBackColor = true;
-            this.chkAllowIn2.CheckedChanged += new System.EventHandler(this.chkAllowIn2_CheckedChanged);
-            // 
-            // chkudpEnabled2
-            // 
-            resources.ApplyResources(this.chkudpEnabled2, "chkudpEnabled2");
-            this.chkudpEnabled2.Name = "chkudpEnabled2";
-            this.chkudpEnabled2.UseVisualStyleBackColor = true;
-            // 
-            // cmbprotocol2
-            // 
-            resources.ApplyResources(this.cmbprotocol2, "cmbprotocol2");
-            this.cmbprotocol2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbprotocol2.FormattingEnabled = true;
-            this.cmbprotocol2.Items.AddRange(new object[] {
-            resources.GetString("cmbprotocol2.Items"),
-            resources.GetString("cmbprotocol2.Items1")});
-            this.cmbprotocol2.Name = "cmbprotocol2";
-            // 
-            // label3
-            // 
-            resources.ApplyResources(this.label3, "label3");
-            this.label3.Name = "label3";
-            // 
-            // txtlocalPort2
-            // 
-            resources.ApplyResources(this.txtlocalPort2, "txtlocalPort2");
-            this.txtlocalPort2.Name = "txtlocalPort2";
-            // 
-            // cmbprotocol
-            // 
-            resources.ApplyResources(this.cmbprotocol, "cmbprotocol");
-            this.cmbprotocol.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cmbprotocol.FormattingEnabled = true;
-            this.cmbprotocol.Items.AddRange(new object[] {
-            resources.GetString("cmbprotocol.Items"),
-            resources.GetString("cmbprotocol.Items1")});
-            this.cmbprotocol.Name = "cmbprotocol";
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.Name = "label1";
-            // 
-            // chkudpEnabled
-            // 
-            resources.ApplyResources(this.chkudpEnabled, "chkudpEnabled");
-            this.chkudpEnabled.Name = "chkudpEnabled";
-            this.chkudpEnabled.UseVisualStyleBackColor = true;
             // 
             // chklogEnabled
             // 
@@ -237,7 +130,6 @@
             // 
             // cmbloglevel
             // 
-            resources.ApplyResources(this.cmbloglevel, "cmbloglevel");
             this.cmbloglevel.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbloglevel.FormattingEnabled = true;
             this.cmbloglevel.Items.AddRange(new object[] {
@@ -246,6 +138,7 @@
             resources.GetString("cmbloglevel.Items2"),
             resources.GetString("cmbloglevel.Items3"),
             resources.GetString("cmbloglevel.Items4")});
+            resources.ApplyResources(this.cmbloglevel, "cmbloglevel");
             this.cmbloglevel.Name = "cmbloglevel";
             // 
             // label5
@@ -253,45 +146,8 @@
             resources.ApplyResources(this.label5, "label5");
             this.label5.Name = "label5";
             // 
-            // txtlocalPort
-            // 
-            resources.ApplyResources(this.txtlocalPort, "txtlocalPort");
-            this.txtlocalPort.Name = "txtlocalPort";
-            // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.Name = "label2";
-            // 
-            // tabPage2
-            // 
-            resources.ApplyResources(this.tabPage2, "tabPage2");
-            this.tabPage2.Controls.Add(this.linkDnsObjectDoc);
-            this.tabPage2.Controls.Add(this.txtremoteDNS);
-            this.tabPage2.Controls.Add(this.label14);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // linkDnsObjectDoc
-            // 
-            resources.ApplyResources(this.linkDnsObjectDoc, "linkDnsObjectDoc");
-            this.linkDnsObjectDoc.Name = "linkDnsObjectDoc";
-            this.linkDnsObjectDoc.TabStop = true;
-            this.linkDnsObjectDoc.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkDnsObjectDoc_LinkClicked);
-            // 
-            // txtremoteDNS
-            // 
-            resources.ApplyResources(this.txtremoteDNS, "txtremoteDNS");
-            this.txtremoteDNS.Name = "txtremoteDNS";
-            // 
-            // label14
-            // 
-            resources.ApplyResources(this.label14, "label14");
-            this.label14.Name = "label14";
-            // 
             // tabPage6
             // 
-            resources.ApplyResources(this.tabPage6, "tabPage6");
             this.tabPage6.Controls.Add(this.chkKcpcongestion);
             this.tabPage6.Controls.Add(this.txtKcpwriteBufferSize);
             this.tabPage6.Controls.Add(this.label10);
@@ -305,6 +161,7 @@
             this.tabPage6.Controls.Add(this.label7);
             this.tabPage6.Controls.Add(this.txtKcpmtu);
             this.tabPage6.Controls.Add(this.label6);
+            resources.ApplyResources(this.tabPage6, "tabPage6");
             this.tabPage6.Name = "tabPage6";
             this.tabPage6.UseVisualStyleBackColor = true;
             // 
@@ -376,10 +233,6 @@
             // 
             // tabPage7
             // 
-            resources.ApplyResources(this.tabPage7, "tabPage7");
-            this.tabPage7.Controls.Add(this.chkEnableSecurityProtocolTls13);
-            this.tabPage7.Controls.Add(this.chkEnableAutoAdjustMainLvColWidth);
-            this.tabPage7.Controls.Add(this.btnSetLoopback);
             this.tabPage7.Controls.Add(this.txtautoUpdateInterval);
             this.tabPage7.Controls.Add(this.label15);
             this.tabPage7.Controls.Add(this.chkIgnoreGeoUpdateCore);
@@ -391,27 +244,9 @@
             this.tabPage7.Controls.Add(this.chkEnableStatistics);
             this.tabPage7.Controls.Add(this.chkAllowLANConn);
             this.tabPage7.Controls.Add(this.chkAutoRun);
+            resources.ApplyResources(this.tabPage7, "tabPage7");
             this.tabPage7.Name = "tabPage7";
             this.tabPage7.UseVisualStyleBackColor = true;
-            // 
-            // chkEnableSecurityProtocolTls13
-            // 
-            resources.ApplyResources(this.chkEnableSecurityProtocolTls13, "chkEnableSecurityProtocolTls13");
-            this.chkEnableSecurityProtocolTls13.Name = "chkEnableSecurityProtocolTls13";
-            this.chkEnableSecurityProtocolTls13.UseVisualStyleBackColor = true;
-            // 
-            // chkEnableAutoAdjustMainLvColWidth
-            // 
-            resources.ApplyResources(this.chkEnableAutoAdjustMainLvColWidth, "chkEnableAutoAdjustMainLvColWidth");
-            this.chkEnableAutoAdjustMainLvColWidth.Name = "chkEnableAutoAdjustMainLvColWidth";
-            this.chkEnableAutoAdjustMainLvColWidth.UseVisualStyleBackColor = true;
-            // 
-            // btnSetLoopback
-            // 
-            resources.ApplyResources(this.btnSetLoopback, "btnSetLoopback");
-            this.btnSetLoopback.Name = "btnSetLoopback";
-            this.btnSetLoopback.UseVisualStyleBackColor = true;
-            this.btnSetLoopback.Click += new System.EventHandler(this.btnSetLoopback_Click);
             // 
             // txtautoUpdateInterval
             // 
@@ -431,12 +266,12 @@
             // 
             // cmbCoreType
             // 
-            resources.ApplyResources(this.cmbCoreType, "cmbCoreType");
             this.cmbCoreType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbCoreType.FormattingEnabled = true;
             this.cmbCoreType.Items.AddRange(new object[] {
             resources.GetString("cmbCoreType.Items"),
             resources.GetString("cmbCoreType.Items1")});
+            resources.ApplyResources(this.cmbCoreType, "cmbCoreType");
             this.cmbCoreType.Name = "cmbCoreType";
             // 
             // label4
@@ -452,9 +287,9 @@
             // 
             // cbFreshrate
             // 
-            resources.ApplyResources(this.cbFreshrate, "cbFreshrate");
             this.cbFreshrate.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbFreshrate.FormattingEnabled = true;
+            resources.ApplyResources(this.cbFreshrate, "cbFreshrate");
             this.cbFreshrate.Name = "cbFreshrate";
             // 
             // lbFreshrate
@@ -480,42 +315,11 @@
             this.chkAutoRun.Name = "chkAutoRun";
             this.chkAutoRun.UseVisualStyleBackColor = true;
             // 
-            // tabPage3
-            // 
-            resources.ApplyResources(this.tabPage3, "tabPage3");
-            this.tabPage3.Controls.Add(this.groupBox2);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.UseVisualStyleBackColor = true;
-            // 
-            // groupBox2
-            // 
-            resources.ApplyResources(this.groupBox2, "groupBox2");
-            this.groupBox2.Controls.Add(this.label13);
-            this.groupBox2.Controls.Add(this.label12);
-            this.groupBox2.Controls.Add(this.txtsystemProxyExceptions);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.TabStop = false;
-            // 
-            // label13
-            // 
-            resources.ApplyResources(this.label13, "label13");
-            this.label13.Name = "label13";
-            // 
-            // label12
-            // 
-            resources.ApplyResources(this.label12, "label12");
-            this.label12.Name = "label12";
-            // 
-            // txtsystemProxyExceptions
-            // 
-            resources.ApplyResources(this.txtsystemProxyExceptions, "txtsystemProxyExceptions");
-            this.txtsystemProxyExceptions.Name = "txtsystemProxyExceptions";
-            // 
             // panel2
             // 
-            resources.ApplyResources(this.panel2, "panel2");
             this.panel2.Controls.Add(this.btnClose);
             this.panel2.Controls.Add(this.btnOK);
+            resources.ApplyResources(this.panel2, "panel2");
             this.panel2.Name = "panel2";
             // 
             // btnOK
@@ -545,15 +349,10 @@
             this.tabPage1.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage2.PerformLayout();
             this.tabPage6.ResumeLayout(false);
             this.tabPage6.PerformLayout();
             this.tabPage7.ResumeLayout(false);
             this.tabPage7.PerformLayout();
-            this.tabPage3.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -566,21 +365,11 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ComboBox cmbloglevel;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox txtlocalPort;
-        private System.Windows.Forms.Label label2;
         private System.Windows.Forms.CheckBox chklogEnabled;
-        private System.Windows.Forms.CheckBox chkudpEnabled;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.ComboBox cmbprotocol;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox cmbprotocol2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox txtlocalPort2;
-        private System.Windows.Forms.CheckBox chkudpEnabled2;
-        private System.Windows.Forms.CheckBox chkAllowIn2;
         private System.Windows.Forms.CheckBox chkmuxEnabled;
         private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.TextBox txtKcpmtu;
@@ -599,29 +388,15 @@
         private System.Windows.Forms.TabPage tabPage7;
         private System.Windows.Forms.CheckBox chkAutoRun;
         private System.Windows.Forms.CheckBox chkAllowLANConn;
-        private System.Windows.Forms.CheckBox chksniffingEnabled;
-        private System.Windows.Forms.CheckBox chksniffingEnabled2;
         private System.Windows.Forms.CheckBox chkEnableStatistics;
         private System.Windows.Forms.ComboBox cbFreshrate;
         private System.Windows.Forms.Label lbFreshrate;
         private System.Windows.Forms.CheckBox chkKeepOlderDedupl;
         private System.Windows.Forms.CheckBox chkdefAllowInsecure;
-        private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.LinkLabel linkDnsObjectDoc;
-        private System.Windows.Forms.TextBox txtremoteDNS;
-        private System.Windows.Forms.Label label14;
         private System.Windows.Forms.ComboBox cmbCoreType;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.CheckBox chkIgnoreGeoUpdateCore;
-        private System.Windows.Forms.TabPage tabPage3;
-        private System.Windows.Forms.TextBox txtsystemProxyExceptions;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox txtautoUpdateInterval;
         private System.Windows.Forms.Label label15;
-        private System.Windows.Forms.Button btnSetLoopback;
-        private System.Windows.Forms.CheckBox chkEnableAutoAdjustMainLvColWidth;
-        private System.Windows.Forms.CheckBox chkEnableSecurityProtocolTls13;
     }
 }

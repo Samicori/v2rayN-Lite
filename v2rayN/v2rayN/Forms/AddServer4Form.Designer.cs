@@ -45,6 +45,9 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnOK = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtLocalPort = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -131,6 +134,9 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.label7);
+            this.panel2.Controls.Add(this.txtLocalPort);
+            this.panel2.Controls.Add(this.label9);
             this.panel2.Controls.Add(this.btnClose);
             this.panel2.Controls.Add(this.btnOK);
             resources.ApplyResources(this.panel2, "panel2");
@@ -148,6 +154,21 @@
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             // 
+            // label7
+            // 
+            resources.ApplyResources(this.label7, "label7");
+            this.label7.Name = "label7";
+            // 
+            // txtLocalPort
+            // 
+            resources.ApplyResources(this.txtLocalPort, "txtLocalPort");
+            this.txtLocalPort.Name = "txtLocalPort";
+            // 
+            // label9
+            // 
+            resources.ApplyResources(this.label9, "label9");
+            this.label9.Name = "label9";
+            // 
             // AddServer4Form
             // 
             resources.ApplyResources(this, "$this");
@@ -163,6 +184,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -185,5 +207,8 @@
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox txtSecurity;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox txtLocalPort;
+        private System.Windows.Forms.Label label9;
     }
 }

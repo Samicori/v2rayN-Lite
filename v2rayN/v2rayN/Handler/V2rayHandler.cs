@@ -27,8 +27,11 @@ namespace v2rayN.Handler
         //private int processId = 0;
         private Process _process;
 
+        public bool Running { get => _process != null; }
+
         public V2rayHandler()
         {
+            lstV2ray = new List<string>();
         }
 
         /// <summary>
@@ -64,7 +67,9 @@ namespace v2rayN.Handler
                 else
                 {
                     ShowMsg(true, msg);
-                    V2rayRestart();
+                    // 不需要关闭已有进程
+                    //V2rayRestart();
+                    V2rayStart();
                 }
             }
         }

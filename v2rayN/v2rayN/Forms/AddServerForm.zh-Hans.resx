@@ -292,4 +292,10 @@
   <data name="$this.Text" xml:space="preserve">
     <value>编辑或添加[VMess]服务器</value>
   </data>
+  <data name="label7.Text" xml:space="preserve">
+    <value>* 填0自动分配</value>
+  </data>
+  <data name="label9.Text" xml:space="preserve">
+    <value>本地端口</value>
+  </data>
 </root>

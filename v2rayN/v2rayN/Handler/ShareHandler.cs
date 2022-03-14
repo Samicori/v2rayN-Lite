@@ -297,7 +297,7 @@ namespace v2rayN.Handler
             }
             return 0;
         }
-        
+
         #endregion
 
         #region  ImportShareUrl 
@@ -635,7 +635,7 @@ namespace v2rayN.Handler
             Match details;
             try
             {
-                details = DetailsParser.Match(Utils.Base64Decode(base64));               
+                details = DetailsParser.Match(Utils.Base64Decode(base64));
             }
             catch (FormatException)
             {
@@ -726,7 +726,7 @@ namespace v2rayN.Handler
             {
                 server.security = userInfoParts[0];
                 server.id = userInfoParts[1];
-            } 
+            }
 
             return server;
         }
@@ -775,7 +775,7 @@ namespace v2rayN.Handler
 
         private static int ResolveStdTransport(NameValueCollection query, ref VmessItem item)
         {
-            item.flow = query["flow"] ?? "";         
+            item.flow = query["flow"] ?? "";
             item.streamSecurity = query["security"] ?? "";
             item.sni = query["sni"] ?? "";
             item.alpn = Utils.String2List(Utils.UrlDecode(query["alpn"] ?? ""));

@@ -57,6 +57,9 @@
             this.MenuItemImportClipboard = new System.Windows.Forms.ToolStripMenuItem();
             this.panel3 = new System.Windows.Forms.Panel();
             this.transportControl = new v2rayN.Forms.ServerTransportControl();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtLocalPort = new System.Windows.Forms.TextBox();
+            this.label9 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.menuServer.SuspendLayout();
@@ -113,6 +116,12 @@
             // 
             this.cmbSecurity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbSecurity.FormattingEnabled = true;
+            this.cmbSecurity.Items.AddRange(new object[] {
+            resources.GetString("cmbSecurity.Items"),
+            resources.GetString("cmbSecurity.Items1"),
+            resources.GetString("cmbSecurity.Items2"),
+            resources.GetString("cmbSecurity.Items3"),
+            resources.GetString("cmbSecurity.Items4")});
             resources.ApplyResources(this.cmbSecurity, "cmbSecurity");
             this.cmbSecurity.Name = "cmbSecurity";
             // 
@@ -173,6 +182,9 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.label7);
+            this.panel2.Controls.Add(this.txtLocalPort);
+            this.panel2.Controls.Add(this.label9);
             this.panel2.Controls.Add(this.btnClose);
             this.panel2.Controls.Add(this.btnOK);
             resources.ApplyResources(this.panel2, "panel2");
@@ -242,6 +254,21 @@
             resources.ApplyResources(this.transportControl, "transportControl");
             this.transportControl.Name = "transportControl";
             // 
+            // label7
+            // 
+            resources.ApplyResources(this.label7, "label7");
+            this.label7.Name = "label7";
+            // 
+            // txtLocalPort
+            // 
+            resources.ApplyResources(this.txtLocalPort, "txtLocalPort");
+            this.txtLocalPort.Name = "txtLocalPort";
+            // 
+            // label9
+            // 
+            resources.ApplyResources(this.label9, "label9");
+            this.label9.Name = "label9";
+            // 
             // AddServerForm
             // 
             resources.ApplyResources(this, "$this");
@@ -258,6 +285,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.menuServer.ResumeLayout(false);
             this.menuServer.PerformLayout();
             this.panel3.ResumeLayout(false);
@@ -296,5 +324,8 @@
         private System.Windows.Forms.Button btnGUID;
         private System.Windows.Forms.Panel panel3;
         private ServerTransportControl transportControl;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox txtLocalPort;
+        private System.Windows.Forms.Label label9;
     }
 }

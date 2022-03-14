@@ -1,8 +1,9 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Collections.Generic;
 using System.Windows.Forms;
-using v2rayN.Base;
 using v2rayN.Handler;
+using v2rayN.Base;
+using v2rayN.HttpProxyHandler;
 using v2rayN.Mode;
 
 namespace v2rayN.Forms
@@ -35,38 +36,40 @@ namespace v2rayN.Forms
             //Mux
             chkmuxEnabled.Checked = config.muxEnabled;
 
-            //本地监听
-            if (config.inbound.Count > 0)
-            {
-                txtlocalPort.Text = config.inbound[0].localPort.ToString();
-                cmbprotocol.Text = config.inbound[0].protocol.ToString();
-                chkudpEnabled.Checked = config.inbound[0].udpEnabled;
-                chksniffingEnabled.Checked = config.inbound[0].sniffingEnabled;
+            // NOTO: Disable
+            ////本地监听
+            //if (config.inbound.Count > 0)
+            //{
+            //    txtlocalPort.Text = config.inbound[0].localPort.ToString();
+            //    cmbprotocol.Text = config.inbound[0].protocol.ToString();
+            //    chkudpEnabled.Checked = config.inbound[0].udpEnabled;
+            //    chksniffingEnabled.Checked = config.inbound[0].sniffingEnabled;
 
-                txtlocalPort2.Text = $"{config.inbound[0].localPort + 1}";
-                cmbprotocol2.Text = Global.InboundHttp;
+            //    txtlocalPort2.Text = $"{config.inbound[0].localPort + 1}";
+            //    cmbprotocol2.Text = Global.InboundHttp;
 
-                if (config.inbound.Count > 1)
-                {
-                    txtlocalPort2.Text = config.inbound[1].localPort.ToString();
-                    cmbprotocol2.Text = config.inbound[1].protocol.ToString();
-                    chkudpEnabled2.Checked = config.inbound[1].udpEnabled;
-                    chksniffingEnabled2.Checked = config.inbound[1].sniffingEnabled;
-                    chkAllowIn2.Checked = true;
-                }
-                else
-                {
-                    chkAllowIn2.Checked = false;
-                }
-                chkAllowIn2State();
-            }
+            //    if (config.inbound.Count > 1)
+            //    {
+            //        txtlocalPort2.Text = config.inbound[1].localPort.ToString();
+            //        cmbprotocol2.Text = config.inbound[1].protocol.ToString();
+            //        chkudpEnabled2.Checked = config.inbound[1].udpEnabled;
+            //        chksniffingEnabled2.Checked = config.inbound[1].sniffingEnabled;
+            //        chkAllowIn2.Checked = true;
+            //    }
+            //    else
+            //    {
+            //        chkAllowIn2.Checked = false;
+            //    }
+            //    chkAllowIn2State();
+            //}
 
-            //remoteDNS
-            txtremoteDNS.Text = config.remoteDNS;
+            // NOTE:Disable
+            //txtremoteDNS.Text = config.remoteDNS;
 
             chkdefAllowInsecure.Checked = config.defAllowInsecure;
 
-            txtsystemProxyExceptions.Text = config.systemProxyExceptions;
+            // NOTO: Disable
+            //txtsystemProxyExceptions.Text = config.systemProxyExceptions;
         }
 
 
@@ -123,8 +126,6 @@ namespace v2rayN.Forms
             chkIgnoreGeoUpdateCore.Checked = config.ignoreGeoUpdateCore;
             cmbCoreType.SelectedIndex = (int)config.coreType;
             txtautoUpdateInterval.Text = config.autoUpdateInterval.ToString();
-            chkEnableAutoAdjustMainLvColWidth.Checked = config.uiItem.enableAutoAdjustMainLvColWidth;
-            chkEnableSecurityProtocolTls13.Checked = config.enableSecurityProtocolTls13;
         }
         private void btnOK_Click(object sender, EventArgs e)
         {
@@ -167,74 +168,79 @@ namespace v2rayN.Forms
             //Mux
             bool muxEnabled = chkmuxEnabled.Checked;
 
-            //本地监听
-            string localPort = txtlocalPort.Text.TrimEx();
-            string protocol = cmbprotocol.Text.TrimEx();
-            bool udpEnabled = chkudpEnabled.Checked;
-            bool sniffingEnabled = chksniffingEnabled.Checked;
-            if (Utils.IsNullOrEmpty(localPort) || !Utils.IsNumberic(localPort))
-            {
-                UI.Show(UIRes.I18N("FillLocalListeningPort"));
-                return -1;
-            }
-            if (Utils.IsNullOrEmpty(protocol))
-            {
-                UI.Show(UIRes.I18N("PleaseSelectProtocol"));
-                return -1;
-            }
+            // NOTO: Disable
+            ////本地监听
+            //string localPort = txtlocalPort.Text.TrimEx();
+            //string protocol = cmbprotocol.Text.TrimEx();
+            //bool udpEnabled = chkudpEnabled.Checked;
+            //bool sniffingEnabled = chksniffingEnabled.Checked;
+            //if (Utils.IsNullOrEmpty(localPort) || !Utils.IsNumberic(localPort))
+            //{
+            //    UI.Show(UIRes.I18N("FillLocalListeningPort"));
+            //    return -1;
+            //}
+            //if (Utils.IsNullOrEmpty(protocol))
+            //{
+            //    UI.Show(UIRes.I18N("PleaseSelectProtocol"));
+            //    return -1;
+            //}
 
-            var remoteDNS = txtremoteDNS.Text.TrimEx();
-            var obj = Utils.ParseJson(remoteDNS);
-            if (obj != null && obj.ContainsKey("servers"))
-            {
-            }
-            else
-            {
-                if (remoteDNS.Contains("{") || remoteDNS.Contains("}"))
-                {
-                    UI.Show(UIRes.I18N("FillCorrectDNSText"));
-                    return -1;
-                }
-            }
+            // NOTE:Disable
+            //var remoteDNS = txtremoteDNS.Text.TrimEx();
+            //var obj = Utils.ParseJson(remoteDNS);
+            //if (obj != null && obj.ContainsKey("servers"))
+            //{
+            //}
+            //else
+            //{
+            //    if (remoteDNS.Contains("{") || remoteDNS.Contains("}"))
+            //    {
+            //        UI.Show(UIRes.I18N("FillCorrectDNSText"));
+            //        return -1;
+            //    }
+            //}
 
-            config.inbound[0].localPort = Utils.ToInt(localPort);
-            config.inbound[0].protocol = protocol;
-            config.inbound[0].udpEnabled = udpEnabled;
-            config.inbound[0].sniffingEnabled = sniffingEnabled;
+            // NOTO: Disable
+            //config.inbound[0].localPort = Utils.ToInt(localPort);
+            //config.inbound[0].protocol = protocol;
+            //config.inbound[0].udpEnabled = udpEnabled;
+            //config.inbound[0].sniffingEnabled = sniffingEnabled;
 
-            //本地监听2
-            string localPort2 = txtlocalPort2.Text.TrimEx();
-            string protocol2 = cmbprotocol2.Text.TrimEx();
-            bool udpEnabled2 = chkudpEnabled2.Checked;
-            bool sniffingEnabled2 = chksniffingEnabled2.Checked;
-            if (chkAllowIn2.Checked)
-            {
-                if (Utils.IsNullOrEmpty(localPort2) || !Utils.IsNumberic(localPort2))
-                {
-                    UI.Show(UIRes.I18N("FillLocalListeningPort"));
-                    return -1;
-                }
-                if (Utils.IsNullOrEmpty(protocol2))
-                {
-                    UI.Show(UIRes.I18N("PleaseSelectProtocol"));
-                    return -1;
-                }
-                if (config.inbound.Count < 2)
-                {
-                    config.inbound.Add(new Mode.InItem());
-                }
-                config.inbound[1].localPort = Utils.ToInt(localPort2);
-                config.inbound[1].protocol = protocol2;
-                config.inbound[1].udpEnabled = udpEnabled2;
-                config.inbound[1].sniffingEnabled = sniffingEnabled2;
-            }
-            else
-            {
-                if (config.inbound.Count > 1)
-                {
-                    config.inbound.RemoveAt(1);
-                }
-            }
+
+            // NOTO: Disable
+            ////本地监听2
+            //string localPort2 = txtlocalPort2.Text.TrimEx();
+            //string protocol2 = cmbprotocol2.Text.TrimEx();
+            //bool udpEnabled2 = chkudpEnabled2.Checked;
+            //bool sniffingEnabled2 = chksniffingEnabled2.Checked;
+            //if (chkAllowIn2.Checked)
+            //{
+            //    if (Utils.IsNullOrEmpty(localPort2) || !Utils.IsNumberic(localPort2))
+            //    {
+            //        UI.Show(UIRes.I18N("FillLocalListeningPort"));
+            //        return -1;
+            //    }
+            //    if (Utils.IsNullOrEmpty(protocol2))
+            //    {
+            //        UI.Show(UIRes.I18N("PleaseSelectProtocol"));
+            //        return -1;
+            //    }
+            //    if (config.inbound.Count < 2)
+            //    {
+            //        config.inbound.Add(new Mode.InItem());
+            //    }
+            //    config.inbound[1].localPort = Utils.ToInt(localPort2);
+            //    config.inbound[1].protocol = protocol2;
+            //    config.inbound[1].udpEnabled = udpEnabled2;
+            //    config.inbound[1].sniffingEnabled = sniffingEnabled2;
+            //}
+            //else
+            //{
+            //    if (config.inbound.Count > 1)
+            //    {
+            //        config.inbound.RemoveAt(1);
+            //    }
+            //}
 
             //日志     
             config.logEnabled = logEnabled;
@@ -243,12 +249,13 @@ namespace v2rayN.Forms
             //Mux
             config.muxEnabled = muxEnabled;
 
-            //remoteDNS          
-            config.remoteDNS = txtremoteDNS.Text.TrimEx();
+            // NOTE:Disable   
+            //config.remoteDNS = txtremoteDNS.Text.TrimEx();
 
             config.defAllowInsecure = chkdefAllowInsecure.Checked;
 
-            config.systemProxyExceptions = txtsystemProxyExceptions.Text.TrimEx();
+            // NOTO: Disable
+            //config.systemProxyExceptions = txtsystemProxyExceptions.Text.TrimEx();
 
             return 0;
         }
@@ -308,8 +315,6 @@ namespace v2rayN.Forms
             config.ignoreGeoUpdateCore = chkIgnoreGeoUpdateCore.Checked;
             config.coreType = (ECoreType)cmbCoreType.SelectedIndex;
             config.autoUpdateInterval = Utils.ToInt(txtautoUpdateInterval.Text);
-            config.uiItem.enableAutoAdjustMainLvColWidth = chkEnableAutoAdjustMainLvColWidth.Checked;
-            config.enableSecurityProtocolTls13 = chkEnableSecurityProtocolTls13.Checked;
 
             return 0;
         }
@@ -319,26 +324,23 @@ namespace v2rayN.Forms
             this.DialogResult = DialogResult.Cancel;
         }
 
-        private void chkAllowIn2_CheckedChanged(object sender, EventArgs e)
-        {
-            chkAllowIn2State();
-        }
-        private void chkAllowIn2State()
-        {
-            bool blAllow2 = chkAllowIn2.Checked;
-            txtlocalPort2.Enabled =
-            cmbprotocol2.Enabled =
-            chkudpEnabled2.Enabled = blAllow2;
-        }
+
+        // NOTO: Disable
+        //private void chkAllowIn2_CheckedChanged(object sender, EventArgs e)
+        //{
+        //    chkAllowIn2State();
+        //}
+        //private void chkAllowIn2State()
+        //{
+        //    bool blAllow2 = chkAllowIn2.Checked;
+        //    txtlocalPort2.Enabled =
+        //    cmbprotocol2.Enabled =
+        //    chkudpEnabled2.Enabled = blAllow2;
+        //}
 
         private void linkDnsObjectDoc_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            Process.Start("https://www.v2fly.org/config/dns.html#dnsobject");
-        }
-
-        private void btnSetLoopback_Click(object sender, EventArgs e)
-        {
-            Process.Start(Utils.GetPath("EnableLoopback.exe"));
+            System.Diagnostics.Process.Start("https://www.v2fly.org/config/dns.html#dnsobject");
         }
     }
 }

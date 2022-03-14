@@ -1,11 +1,10 @@
-﻿using NHotkey;
-using NHotkey.WindowsForms;
-using System;
+﻿using System;
 using System.Drawing;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using v2rayN.Base;
 using v2rayN.Mode;
 
 namespace v2rayN.Handler
@@ -25,6 +24,7 @@ namespace v2rayN.Handler
         {
             get { return instance.Value; }
         }
+
         public Icon GetNotifyIcon(Config config, Icon def)
         {
             try
@@ -253,49 +253,5 @@ namespace v2rayN.Handler
                 Thread.Sleep(1000 * 3600 * config.autoUpdateInterval);
             }
         }
-
-        public void RegisterGlobalHotkey(Config config, EventHandler<HotkeyEventArgs> handler, Action<bool, string> update)
-        {
-            if (config.globalHotkeys == null)
-            {
-                return;
-            }
-
-            foreach (var item in config.globalHotkeys)
-            {
-                if (item.KeyCode == null)
-                {
-                    continue;
-                }
-
-                Keys keys = (Keys)item.KeyCode;
-                if (item.Control)
-                {
-                    keys |= Keys.Control;
-                }
-                if (item.Alt)
-                {
-                    keys |= Keys.Alt;
-                }
-                if (item.Shift)
-                {
-                    keys |= Keys.Shift;
-                }
-
-                try
-                {
-                    HotkeyManager.Current.AddOrReplace(((int)item.eGlobalHotkey).ToString(), keys, handler);
-                    var msg = string.Format(UIRes.I18N("RegisterGlobalHotkeySuccessfully"), $"{item.eGlobalHotkey.ToString()} = {keys}");
-                    update(false, msg);
-                }
-                catch (Exception ex)
-                {
-                    var msg = string.Format(UIRes.I18N("RegisterGlobalHotkeyFailed"), $"{item.eGlobalHotkey.ToString()} = {keys}", ex.Message);
-                    update(false, msg);
-                    Utils.SaveLog(msg);
-                }
-            }
-        }
-
     }
 }

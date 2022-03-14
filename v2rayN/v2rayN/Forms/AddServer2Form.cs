@@ -33,6 +33,7 @@ namespace v2rayN.Forms
             vmessItem = config.vmess[EditIndex];
             txtRemarks.Text = vmessItem.remarks;
             txtAddress.Text = vmessItem.address;
+            txtLocalPort.Text = vmessItem.locaPort.ToString();
             txtAddress.ReadOnly = true;
         }
 
@@ -43,17 +44,26 @@ namespace v2rayN.Forms
         private void ClearServer()
         {
             txtRemarks.Text = "";
+            txtLocalPort.Text = "0";
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
             string remarks = txtRemarks.Text;
+            string localPort = txtLocalPort.Text;
             if (Utils.IsNullOrEmpty(remarks))
             {
                 UI.Show(UIRes.I18N("PleaseFillRemarks"));
                 return;
             }
+            if (Utils.IsNullOrEmpty(localPort) || !Utils.IsNumberic(localPort))
+            {
+                UI.Show(UIRes.I18N("FillCorrectServerPort"));
+                return;
+            }
+
             vmessItem.remarks = remarks;
+            vmessItem.locaPort = Utils.ToInt(localPort);
 
             if (ConfigHandler.EditCustomServer(ref config, vmessItem, EditIndex) == 0)
             {

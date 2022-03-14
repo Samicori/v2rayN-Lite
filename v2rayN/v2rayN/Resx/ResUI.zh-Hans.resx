@@ -156,6 +156,9 @@
   <data name="FailedReadConfiguration" xml:space="preserve">
     <value>读取配置文件失败</value>
   </data>
+  <data name="FillCorrectAlterId" xml:space="preserve">
+    <value>请填写正确格式额外ID</value>
+  </data>
   <data name="FillCorrectServerPort" xml:space="preserve">
     <value>请填写正确格式服务器端口</value>
   </data>
@@ -404,7 +407,7 @@
     <value>*h2 path</value>
   </data>
   <data name="TransportPathTip3" xml:space="preserve">
-    <value>*QUIC 加密密钥</value>
+    <value>*QUIC 加密密钥/Kcp seed</value>
   </data>
   <data name="TransportPathTip4" xml:space="preserve">
     <value>*grpc serviceName</value>
@@ -436,13 +439,13 @@
   <data name="LvTLS" xml:space="preserve">
     <value>传输层安全</value>
   </data>
-  <data name="TransportPathTip5" xml:space="preserve">
-    <value>*Kcp seed</value>
+  <data name="LvLocalPort" xml:space="preserve">
+    <value>本地端口</value>
   </data>
-  <data name="RegisterGlobalHotkeyFailed" xml:space="preserve">
-    <value>注册全局热键 {0} 失败,原因 {1}</value>
+  <data name="LvAuto" xml:space="preserve">
+    <value>自动</value>
   </data>
-  <data name="RegisterGlobalHotkeySuccessfully" xml:space="preserve">
-    <value>注册全局热键 {0} 成功</value>
+  <data name="ServerState" xml:space="preserve">
+    <value>服务器：{0}    已连接：{1}</value>
   </data>
 </root>

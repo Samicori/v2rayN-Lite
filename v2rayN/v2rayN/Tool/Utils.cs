@@ -715,18 +715,22 @@ namespace v2rayN
             return lstIPAddress;
         }
 
-        public static void SetSecurityProtocol(bool enableSecurityProtocolTls13)
+        public static void SetSecurityProtocol()
         {
-            if (enableSecurityProtocolTls13)
+            string securityProtocolTls13 = RegReadValue(Global.MyRegPath, Global.MyRegKeySecurityProtocolTls13, "0");
+
+            if (securityProtocolTls13.Equals("1"))
             {
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3
+                                           | SecurityProtocolType.Tls
                                            | SecurityProtocolType.Tls11
                                            | SecurityProtocolType.Tls12
                                            | SecurityProtocolType.Tls13;
             }
             else
             {
-                ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls
+                ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3
+                                           | SecurityProtocolType.Tls
                                            | SecurityProtocolType.Tls11
                                            | SecurityProtocolType.Tls12;
             }
@@ -760,22 +764,13 @@ namespace v2rayN
         /// 取得版本
         /// </summary>
         /// <returns></returns>
-        public static string GetVersion(bool blFull = true)
+        public static string GetVersion()
         {
             try
             {
                 string location = GetExePath();
-                if (blFull)
-                {
-                    return string.Format("v2rayN - V{0} - {1}",
-                            FileVersionInfo.GetVersionInfo(location).FileVersion.ToString(),
-                            File.GetLastWriteTime(location).ToString("yyyy/MM/dd"));
-                }
-                else
-                {
-                    return string.Format("v2rayN/{0}",
+                return string.Format("v2rayN-Lite  V{0}",
                         FileVersionInfo.GetVersionInfo(location).FileVersion.ToString());
-                }
             }
             catch (Exception ex)
             {
@@ -848,18 +843,11 @@ namespace v2rayN
         /// 取得GUID
         /// </summary>
         /// <returns></returns>
-        public static string GetGUID(bool full = true)
+        public static string GetGUID()
         {
             try
             {
-                if (full)
-                {
-                    return Guid.NewGuid().ToString("D");
-                }
-                else
-                {
-                    return BitConverter.ToInt64(Guid.NewGuid().ToByteArray(), 0).ToString();
-                }
+                return Guid.NewGuid().ToString("D");
             }
             catch (Exception ex)
             {

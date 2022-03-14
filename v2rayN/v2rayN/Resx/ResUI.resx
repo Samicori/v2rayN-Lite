@@ -156,6 +156,9 @@
   <data name="FailedReadConfiguration" xml:space="preserve">
     <value>Failed to read configuration file</value>
   </data>
+  <data name="FillCorrectAlterId" xml:space="preserve">
+    <value>Please fill in the correct format extra ID</value>
+  </data>
   <data name="FillCorrectServerPort" xml:space="preserve">
     <value>Please fill in the correct format server port</value>
   </data>
@@ -436,13 +439,13 @@
   <data name="LvTLS" xml:space="preserve">
     <value>TLS</value>
   </data>
-  <data name="TransportPathTip5" xml:space="preserve">
-    <value>*Kcp seed</value>
+  <data name="LvLocalPort" xml:space="preserve">
+    <value>Local Port</value>
   </data>
-  <data name="RegisterGlobalHotkeyFailed" xml:space="preserve">
-    <value>Global hotkey {0} registered failed, reason {1}</value>
+  <data name="LvAuto" xml:space="preserve">
+    <value>Auto</value>
   </data>
-  <data name="RegisterGlobalHotkeySuccessfully" xml:space="preserve">
-    <value>Global hotkey {0} registered successfully</value>
+  <data name="ServerState" xml:space="preserve">
+    <value>Servers: {0}  Active: {1}</value>
   </data>
 </root>

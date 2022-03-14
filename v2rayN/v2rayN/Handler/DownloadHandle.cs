@@ -37,7 +37,7 @@ namespace v2rayN.Handler
             WebClientEx ws = new WebClientEx();
             try
             {
-                Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().enableSecurityProtocolTls13);
+                Utils.SetSecurityProtocol();
                 UpdateCompleted?.Invoke(this, new ResultEventArgs(false, UIRes.I18N("Downloading")));
 
                 progressPercentage = -1;
@@ -131,24 +131,18 @@ namespace v2rayN.Handler
         /// DownloadString
         /// </summary> 
         /// <param name="url"></param>
-        public void WebDownloadString(string url, WebProxy webProxy, string userAgent)
+        public void WebDownloadString(string url, string userAgent)
         {
             string source = string.Empty;
             try
             {
-                Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().enableSecurityProtocolTls13);
+                Utils.SetSecurityProtocol();
 
                 WebClientEx ws = new WebClientEx();
-                if (webProxy != null)
+                if (!Utils.IsNullOrEmpty(userAgent))
                 {
-                    ws.Proxy = webProxy;
+                    ws.Headers.Add("user-agent", userAgent);
                 }
-
-                if (Utils.IsNullOrEmpty(userAgent))
-                {
-                    userAgent = $"{Utils.GetVersion(false)}";
-                }
-                ws.Headers.Add("user-agent", userAgent);
 
                 ws.DownloadStringCompleted += Ws_DownloadStringCompleted;
                 ws.DownloadStringAsync(new Uri(url));
@@ -187,7 +181,7 @@ namespace v2rayN.Handler
             string source = string.Empty;
             try
             {
-                Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().enableSecurityProtocolTls13);
+                Utils.SetSecurityProtocol();
 
                 WebClientEx ws = new WebClientEx();
 
@@ -205,7 +199,7 @@ namespace v2rayN.Handler
             WebClientEx ws = new WebClientEx();
             try
             {
-                Utils.SetSecurityProtocol(LazyConfig.Instance.GetConfig().enableSecurityProtocolTls13);
+                Utils.SetSecurityProtocol();
                 UpdateCompleted?.Invoke(this, new ResultEventArgs(false, UIRes.I18N("Downloading")));
 
                 progressPercentage = -1;

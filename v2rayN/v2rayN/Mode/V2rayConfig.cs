@@ -206,6 +206,14 @@ namespace v2rayN.Mode
         /// 
         /// </summary>
         public Mux mux { get; set; }
+
+        public Outbounds()
+        {
+            settings = new Outboundsettings();
+            mux = new Mux();
+            streamSettings = new StreamSettings();
+        }
+
     }
 
     public class Outboundsettings
@@ -223,6 +231,12 @@ namespace v2rayN.Mode
         /// 
         /// </summary>
         public Response response { get; set; }
+
+        public Outboundsettings()
+        {
+            vnext = new List<VnextItem>();
+            servers = new List<ServersItem>();
+        }
     }
 
     public class VnextItem
@@ -239,6 +253,12 @@ namespace v2rayN.Mode
         /// 
         /// </summary>
         public List<UsersItem> users { get; set; }
+
+        public VnextItem()
+        {
+            users = new List<UsersItem>();
+        }
+
     }
     public class ServersItem
     {
@@ -390,7 +410,6 @@ namespace v2rayN.Mode
         /// grpc
         /// </summary>
         public GrpcSettings grpcSettings { get; set; }
-
     }
 
     public class TlsSettings
@@ -508,7 +527,6 @@ namespace v2rayN.Mode
         /// 
         /// </summary>
         public List<string> host { get; set; }
-
     }
 
     public class QuicSettings

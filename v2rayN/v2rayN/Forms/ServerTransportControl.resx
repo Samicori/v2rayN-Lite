@@ -292,7 +292,7 @@
     <value>5</value>
   </data>
   <data name="panTlsMore.Location" type="System.Drawing.Point, System.Drawing">
-    <value>200, 149</value>
+    <value>200, 145</value>
   </data>
   <data name="panTlsMore.Size" type="System.Drawing.Size, System.Drawing">
     <value>500, 71</value>
@@ -319,7 +319,7 @@
     <value>NoControl</value>
   </data>
   <data name="tipNetwork.Location" type="System.Drawing.Point, System.Drawing">
-    <value>350, 32</value>
+    <value>350, 28</value>
   </data>
   <data name="tipNetwork.Size" type="System.Drawing.Size, System.Drawing">
     <value>113, 12</value>
@@ -343,7 +343,7 @@
     <value>1</value>
   </data>
   <data name="txtPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>127, 124</value>
+    <value>127, 120</value>
   </data>
   <data name="txtPath.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -366,8 +366,26 @@
   <data name="&gt;&gt;txtPath.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
+  <data name="cmbNetwork.Items" xml:space="preserve">
+    <value>tcp</value>
+  </data>
+  <data name="cmbNetwork.Items1" xml:space="preserve">
+    <value>kcp</value>
+  </data>
+  <data name="cmbNetwork.Items2" xml:space="preserve">
+    <value>ws</value>
+  </data>
+  <data name="cmbNetwork.Items3" xml:space="preserve">
+    <value>h2</value>
+  </data>
+  <data name="cmbNetwork.Items4" xml:space="preserve">
+    <value>quic</value>
+  </data>
+  <data name="cmbNetwork.Items5" xml:space="preserve">
+    <value>grpc</value>
+  </data>
   <data name="cmbNetwork.Location" type="System.Drawing.Point, System.Drawing">
-    <value>192, 28</value>
+    <value>192, 24</value>
   </data>
   <data name="cmbNetwork.Size" type="System.Drawing.Size, System.Drawing">
     <value>143, 20</value>
@@ -394,7 +412,7 @@
     <value>NoControl</value>
   </data>
   <data name="labNetwork.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 32</value>
+    <value>9, 28</value>
   </data>
   <data name="labNetwork.Size" type="System.Drawing.Size, System.Drawing">
     <value>167, 12</value>
@@ -424,7 +442,7 @@
     <value>NoControl</value>
   </data>
   <data name="labPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 128</value>
+    <value>9, 124</value>
   </data>
   <data name="labPath.Size" type="System.Drawing.Size, System.Drawing">
     <value>29, 12</value>
@@ -454,7 +472,7 @@
     <value>NoControl</value>
   </data>
   <data name="tipPath.Location" type="System.Drawing.Point, System.Drawing">
-    <value>529, 128</value>
+    <value>529, 124</value>
   </data>
   <data name="tipPath.Size" type="System.Drawing.Size, System.Drawing">
     <value>11, 12</value>
@@ -484,7 +502,7 @@
     <value>NoControl</value>
   </data>
   <data name="tipRequestHost.Location" type="System.Drawing.Point, System.Drawing">
-    <value>464, 96</value>
+    <value>464, 92</value>
   </data>
   <data name="tipRequestHost.Size" type="System.Drawing.Size, System.Drawing">
     <value>11, 12</value>
@@ -514,7 +532,7 @@
     <value>NoControl</value>
   </data>
   <data name="labStreamSecurity.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 160</value>
+    <value>9, 156</value>
   </data>
   <data name="labStreamSecurity.Size" type="System.Drawing.Size, System.Drawing">
     <value>23, 12</value>
@@ -538,7 +556,7 @@
     <value>8</value>
   </data>
   <data name="cmbStreamSecurity.Location" type="System.Drawing.Point, System.Drawing">
-    <value>127, 156</value>
+    <value>127, 152</value>
   </data>
   <data name="cmbStreamSecurity.Size" type="System.Drawing.Size, System.Drawing">
     <value>60, 20</value>
@@ -565,7 +583,7 @@
     <value>NoControl</value>
   </data>
   <data name="tipHeaderType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>282, 64</value>
+    <value>282, 60</value>
   </data>
   <data name="tipHeaderType.Size" type="System.Drawing.Size, System.Drawing">
     <value>11, 12</value>
@@ -589,7 +607,7 @@
     <value>10</value>
   </data>
   <data name="txtRequestHost.Location" type="System.Drawing.Point, System.Drawing">
-    <value>158, 92</value>
+    <value>158, 88</value>
   </data>
   <data name="txtRequestHost.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -619,7 +637,7 @@
     <value>NoControl</value>
   </data>
   <data name="labHeaderType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 64</value>
+    <value>9, 60</value>
   </data>
   <data name="labHeaderType.Size" type="System.Drawing.Size, System.Drawing">
     <value>95, 12</value>
@@ -649,7 +667,7 @@
     <value>NoControl</value>
   </data>
   <data name="labRequestHost.Location" type="System.Drawing.Point, System.Drawing">
-    <value>9, 96</value>
+    <value>9, 92</value>
   </data>
   <data name="labRequestHost.Size" type="System.Drawing.Size, System.Drawing">
     <value>143, 12</value>
@@ -672,8 +690,29 @@
   <data name="&gt;&gt;labRequestHost.ZOrder" xml:space="preserve">
     <value>13</value>
   </data>
+  <data name="cmbHeaderType.Items" xml:space="preserve">
+    <value>none</value>
+  </data>
+  <data name="cmbHeaderType.Items1" xml:space="preserve">
+    <value>http</value>
+  </data>
+  <data name="cmbHeaderType.Items2" xml:space="preserve">
+    <value>srtp</value>
+  </data>
+  <data name="cmbHeaderType.Items3" xml:space="preserve">
+    <value>utp</value>
+  </data>
+  <data name="cmbHeaderType.Items4" xml:space="preserve">
+    <value>wechat-video</value>
+  </data>
+  <data name="cmbHeaderType.Items5" xml:space="preserve">
+    <value>dtls</value>
+  </data>
+  <data name="cmbHeaderType.Items6" xml:space="preserve">
+    <value>wireguard</value>
+  </data>
   <data name="cmbHeaderType.Location" type="System.Drawing.Point, System.Drawing">
-    <value>127, 60</value>
+    <value>127, 56</value>
   </data>
   <data name="cmbHeaderType.Size" type="System.Drawing.Size, System.Drawing">
     <value>143, 20</value>

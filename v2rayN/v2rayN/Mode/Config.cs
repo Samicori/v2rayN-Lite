@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Forms;
 using v2rayN.Base;
+using v2rayN.HttpProxyHandler;
 
 
 namespace v2rayN.Mode
@@ -86,6 +86,7 @@ namespace v2rayN.Mode
             get; set;
         }
 
+
         /// <summary>
         /// 自定义远程DNS
         /// </summary>
@@ -161,6 +162,8 @@ namespace v2rayN.Mode
             get; set;
         }
 
+        public List<OutItem> outbounds { get; set; }
+
         /// <summary>
         /// vmess服务器信息
         /// </summary>
@@ -201,14 +204,18 @@ namespace v2rayN.Mode
             get; set;
         }
 
-        public List<KeyEventItem> globalHotkeys
-        {
-            get; set;
-        }
-
         #endregion
 
-        #region function
+        public Config()
+        {
+            inbound = new List<InItem>();
+            outbounds = new List<OutItem>();
+            vmess = new List<VmessItem>();
+            subItem = new List<SubItem>();
+        }
+
+
+        #region 函数
 
         public string address()
         {
@@ -420,7 +427,6 @@ namespace v2rayN.Mode
 
             return Global.ssSecuritysInXray;
         }
-        
         #endregion
 
     }
@@ -430,7 +436,7 @@ namespace v2rayN.Mode
     {
         public VmessItem()
         {
-            indexId = string.Empty;
+            symbol = Guid.NewGuid().ToString();
             configVersion = 1;
             address = string.Empty;
             port = 0;
@@ -448,6 +454,7 @@ namespace v2rayN.Mode
             testResult = string.Empty;
             subid = string.Empty;
             flow = string.Empty;
+            locaPort = 0;
         }
 
         public string getSummary()
@@ -519,8 +526,10 @@ namespace v2rayN.Mode
         }
         public string indexId
         {
-            get; set;
+            get { return this.symbol; }
         }
+
+        public string symbol { get; set; }
 
         /// <summary>
         /// 版本(现在=2)
@@ -666,11 +675,33 @@ namespace v2rayN.Mode
         {
             get; set;
         }
+        /// <summary>
+        /// 本地端口
+        /// </summary>
+        public int locaPort
+        {
+            get; set;
+        }
+    }
+
+    [Serializable]
+    public class OutItem
+    {
+        public string tag { get; set; }
+
+        /// <summary>
+        /// 协议，默认为socks
+        /// </summary>
+        public string protocol { get; set; }
+
+        public string serverSymbol { get; set; }
     }
 
     [Serializable]
     public class InItem
     {
+        public string tag { get; set; }
+
         /// <summary>
         /// 本地监听端口
         /// </summary>
@@ -800,10 +831,7 @@ namespace v2rayN.Mode
     [Serializable]
     public class UIItem
     {
-        public bool enableAutoAdjustMainLvColWidth
-        {
-            get; set;
-        }
+
 
         public System.Drawing.Size mainSize
         {
@@ -837,20 +865,5 @@ namespace v2rayN.Mode
         {
             get; set;
         }
-    }
-
-    [Serializable]
-    public class KeyEventItem
-    {
-        public EGlobalHotkey eGlobalHotkey { get; set; }
-
-        public bool Alt { get; set; }
-
-        public bool Control { get; set; }
-
-        public bool Shift { get; set; }
-
-        public Keys? KeyCode { get; set; }
-
     }
 }

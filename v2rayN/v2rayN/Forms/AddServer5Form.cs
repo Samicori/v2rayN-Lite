@@ -15,7 +15,6 @@ namespace v2rayN.Forms
 
         private void AddServer5Form_Load(object sender, EventArgs e)
         {
-            cmbFlow.Items.AddRange(Global.xtlsFlows.ToArray());
             transportControl.AllowXtls = true;
             if (EditIndex >= 0)
             {
@@ -36,6 +35,7 @@ namespace v2rayN.Forms
         {
             txtAddress.Text = vmessItem.address;
             txtPort.Text = vmessItem.port.ToString();
+            txtLocalPort.Text = vmessItem.locaPort.ToString();
             txtId.Text = vmessItem.id;
             cmbFlow.Text = vmessItem.flow;
             cmbSecurity.Text = vmessItem.security;
@@ -52,6 +52,7 @@ namespace v2rayN.Forms
         {
             txtAddress.Text = "";
             txtPort.Text = "";
+            txtLocalPort.Text = "0";
             txtId.Text = "";
             cmbFlow.Text = "";
             cmbSecurity.Text = Global.None;
@@ -64,6 +65,7 @@ namespace v2rayN.Forms
         {
             string address = txtAddress.Text;
             string port = txtPort.Text;
+            string localPort = txtLocalPort.Text;
             string id = txtId.Text;
             string flow = cmbFlow.Text;
             string security = cmbSecurity.Text;
@@ -79,6 +81,11 @@ namespace v2rayN.Forms
                 UI.Show(UIRes.I18N("FillCorrectServerPort"));
                 return;
             }
+            if (Utils.IsNullOrEmpty(localPort) || !Utils.IsNumberic(localPort))
+            {
+                UI.Show(UIRes.I18N("FillCorrectServerPort"));
+                return;
+            }
             if (Utils.IsNullOrEmpty(id))
             {
                 UI.Show(UIRes.I18N("FillUUID"));
@@ -89,6 +96,7 @@ namespace v2rayN.Forms
 
             vmessItem.address = address;
             vmessItem.port = Utils.ToInt(port);
+            vmessItem.locaPort = Utils.ToInt(localPort);
             vmessItem.id = id;
             vmessItem.flow = flow;
             vmessItem.security = security;

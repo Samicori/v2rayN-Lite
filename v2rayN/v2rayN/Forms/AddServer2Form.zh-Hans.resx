@@ -135,7 +135,13 @@
   <data name="label13.Text" xml:space="preserve">
     <value>*手填,方便识别管理</value>
   </data>
+  <data name="label4.Text" xml:space="preserve">
+    <value>本地端口</value>
+  </data>
   <data name="label6.Text" xml:space="preserve">
     <value>别名(remarks)</value>
+  </data>
+  <data name="label7.Text" xml:space="preserve">
+    <value>* 填0自动分配</value>
   </data>
 </root>

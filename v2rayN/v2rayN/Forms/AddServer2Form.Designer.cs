@@ -39,26 +39,29 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnOK = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.label7 = new System.Windows.Forms.Label();
+            this.txtLocalPort = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnClose
             // 
-            resources.ApplyResources(this.btnClose, "btnClose");
             this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            resources.ApplyResources(this.btnClose, "btnClose");
             this.btnClose.Name = "btnClose";
             this.btnClose.UseVisualStyleBackColor = true;
             this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             // 
             // groupBox1
             // 
-            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Controls.Add(this.txtAddress);
             this.groupBox1.Controls.Add(this.label13);
             this.groupBox1.Controls.Add(this.txtRemarks);
             this.groupBox1.Controls.Add(this.label6);
             this.groupBox1.Controls.Add(this.label1);
+            resources.ApplyResources(this.groupBox1, "groupBox1");
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.TabStop = false;
             // 
@@ -89,9 +92,12 @@
             // 
             // panel2
             // 
-            resources.ApplyResources(this.panel2, "panel2");
+            this.panel2.Controls.Add(this.label7);
+            this.panel2.Controls.Add(this.txtLocalPort);
+            this.panel2.Controls.Add(this.label4);
             this.panel2.Controls.Add(this.btnClose);
             this.panel2.Controls.Add(this.btnOK);
+            resources.ApplyResources(this.panel2, "panel2");
             this.panel2.Name = "panel2";
             // 
             // btnOK
@@ -105,6 +111,21 @@
             // 
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
+            // 
+            // label7
+            // 
+            resources.ApplyResources(this.label7, "label7");
+            this.label7.Name = "label7";
+            // 
+            // txtLocalPort
+            // 
+            resources.ApplyResources(this.txtLocalPort, "txtLocalPort");
+            this.txtLocalPort.Name = "txtLocalPort";
+            // 
+            // label4
+            // 
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.Name = "label4";
             // 
             // AddServer2Form
             // 
@@ -120,6 +141,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -136,5 +158,8 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.TextBox txtAddress;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox txtLocalPort;
+        private System.Windows.Forms.Label label4;
     }
 }

@@ -15,7 +15,6 @@ namespace v2rayN.Forms
 
         private void AddServerForm_Load(object sender, EventArgs e)
         {
-            cmbSecurity.Items.AddRange(Global.vmessSecuritys.ToArray());
             if (EditIndex >= 0)
             {
                 vmessItem = config.vmess[EditIndex];
@@ -35,6 +34,7 @@ namespace v2rayN.Forms
         {
             txtAddress.Text = vmessItem.address;
             txtPort.Text = vmessItem.port.ToString();
+            txtLocalPort.Text = vmessItem.locaPort.ToString();
             txtId.Text = vmessItem.id;
             txtAlterId.Text = vmessItem.alterId.ToString();
             cmbSecurity.Text = vmessItem.security;
@@ -51,6 +51,7 @@ namespace v2rayN.Forms
         {
             txtAddress.Text = "";
             txtPort.Text = "";
+            txtLocalPort.Text = "0";
             txtId.Text = "";
             txtAlterId.Text = "0";
             cmbSecurity.Text = Global.DefaultSecurity;
@@ -63,6 +64,7 @@ namespace v2rayN.Forms
         {
             string address = txtAddress.Text;
             string port = txtPort.Text;
+            string localPort = txtLocalPort.Text;
             string id = txtId.Text;
             string alterId = txtAlterId.Text;
             string security = cmbSecurity.Text;
@@ -78,9 +80,19 @@ namespace v2rayN.Forms
                 UI.Show(UIRes.I18N("FillCorrectServerPort"));
                 return;
             }
+            if (Utils.IsNullOrEmpty(localPort) || !Utils.IsNumberic(localPort))
+            {
+                UI.Show(UIRes.I18N("FillCorrectServerPort"));
+                return;
+            }
             if (Utils.IsNullOrEmpty(id))
             {
                 UI.Show(UIRes.I18N("FillUUID"));
+                return;
+            }
+            if (Utils.IsNullOrEmpty(alterId) || !Utils.IsNumberic(alterId))
+            {
+                UI.Show(UIRes.I18N("FillCorrectAlterId"));
                 return;
             }
 
@@ -88,6 +100,7 @@ namespace v2rayN.Forms
 
             vmessItem.address = address;
             vmessItem.port = Utils.ToInt(port);
+            vmessItem.locaPort = Utils.ToInt(localPort);
             vmessItem.id = id;
             vmessItem.alterId = Utils.ToInt(alterId);
             vmessItem.security = security;

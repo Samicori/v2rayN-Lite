@@ -45,6 +45,9 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.btnOK = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.txtLocalPort = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -83,6 +86,13 @@
             // 
             this.cmbSecurity.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cmbSecurity.FormattingEnabled = true;
+            this.cmbSecurity.Items.AddRange(new object[] {
+            resources.GetString("cmbSecurity.Items"),
+            resources.GetString("cmbSecurity.Items1"),
+            resources.GetString("cmbSecurity.Items2"),
+            resources.GetString("cmbSecurity.Items3"),
+            resources.GetString("cmbSecurity.Items4"),
+            resources.GetString("cmbSecurity.Items5")});
             resources.ApplyResources(this.cmbSecurity, "cmbSecurity");
             this.cmbSecurity.Name = "cmbSecurity";
             // 
@@ -133,6 +143,9 @@
             // 
             // panel2
             // 
+            this.panel2.Controls.Add(this.label7);
+            this.panel2.Controls.Add(this.txtLocalPort);
+            this.panel2.Controls.Add(this.label4);
             this.panel2.Controls.Add(this.btnClose);
             this.panel2.Controls.Add(this.btnOK);
             resources.ApplyResources(this.panel2, "panel2");
@@ -150,6 +163,21 @@
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             // 
+            // txtLocalPort
+            // 
+            resources.ApplyResources(this.txtLocalPort, "txtLocalPort");
+            this.txtLocalPort.Name = "txtLocalPort";
+            // 
+            // label4
+            // 
+            resources.ApplyResources(this.label4, "label4");
+            this.label4.Name = "label4";
+            // 
+            // label7
+            // 
+            resources.ApplyResources(this.label7, "label7");
+            this.label7.Name = "label7";
+            // 
             // AddServer3Form
             // 
             resources.ApplyResources(this, "$this");
@@ -165,6 +193,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.panel2.ResumeLayout(false);
+            this.panel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -187,5 +216,8 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox txtLocalPort;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Label label7;
     }
 }
