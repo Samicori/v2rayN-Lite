@@ -57,7 +57,7 @@ namespace v2rayN.Forms
             {
                 statistics = new StatisticsHandler(config, UpdateStatisticsHandler);
             }
-            UpdateActiveInfo(0,0);
+            UpdateActiveInfo(0, 0);
             MainFormHandler.Instance.UpdateTask(config, UpdateTaskHandler);
         }
 
@@ -427,8 +427,6 @@ namespace v2rayN.Forms
         {
             //toolSslInboundInfo.Text = $"{Global.InboundSocks} {Global.Loopback}:{config.inbound[0].localPort} | "
             // + $"{ Global.InboundHttp} { Global.Loopback}:{Global.httpPort}";
-
-            //notifyMain.Icon = MainFormHandler.Instance.GetNotifyIcon(config, this.Icon);
         }
         private void ssMain_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
@@ -507,6 +505,15 @@ namespace v2rayN.Forms
 
             ChangePACButtonStatus(config.sysProxyType);
 
+            if (config.outbounds.Count > 0)
+            {
+                notifyMain.Icon = Properties.Resources.V2rayN_Red;
+            }
+            else
+            {
+                notifyMain.Icon = Properties.Resources.V2rayN;
+            }
+
             menuItemRestart.Enabled = true;
         }
 
@@ -519,6 +526,8 @@ namespace v2rayN.Forms
             statistics?.SaveToFile();
 
             ChangePACButtonStatus(0);
+
+            notifyMain.Icon = Properties.Resources.V2rayN;
 
             v2rayHandler.V2rayStop();
         }

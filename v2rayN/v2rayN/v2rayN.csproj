@@ -270,6 +270,7 @@
     <Compile Include="Tool\UI.cs" />
     <Compile Include="Tool\Utils.cs" />
     <Compile Include="Handler\V2rayConfigHandler.cs" />
+    <Content Include="v2rayN-Red.ico" />
     <Content Include="v2rayN.ico" />
     <EmbeddedResource Include="Forms\AddServer2Form.zh-Hans.resx">
       <DependentUpon>AddServer2Form.cs</DependentUpon>

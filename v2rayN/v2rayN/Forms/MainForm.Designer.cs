@@ -83,6 +83,7 @@
             this.menuMsgBoxAddRoutingRule = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMsgBoxFilter = new System.Windows.Forms.ToolStripMenuItem();
             this.ssMain = new System.Windows.Forms.StatusStrip();
+            this.tssServerStateLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslBlank2 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslServerSpeed = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolSslBlank4 = new System.Windows.Forms.ToolStripStatusLabel();
@@ -128,7 +129,6 @@
             this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbLanguageDef = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbLanguageZhHans = new System.Windows.Forms.ToolStripMenuItem();
-            this.tssServerStateLabel = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.scMain)).BeginInit();
             this.scMain.Panel1.SuspendLayout();
             this.scMain.Panel2.SuspendLayout();
@@ -547,6 +547,11 @@
             this.ssMain.Name = "ssMain";
             this.ssMain.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.ssMain_ItemClicked);
             // 
+            // tssServerStateLabel
+            // 
+            this.tssServerStateLabel.Name = "tssServerStateLabel";
+            resources.ApplyResources(this.tssServerStateLabel, "tssServerStateLabel");
+            // 
             // toolSslBlank2
             // 
             this.toolSslBlank2.Name = "toolSslBlank2";
@@ -851,11 +856,6 @@
             this.tsbLanguageZhHans.Name = "tsbLanguageZhHans";
             resources.ApplyResources(this.tsbLanguageZhHans, "tsbLanguageZhHans");
             this.tsbLanguageZhHans.Click += new System.EventHandler(this.tsbLanguageZhHans_Click);
-            // 
-            // tssServerStateLabel
-            // 
-            this.tssServerStateLabel.Name = "tssServerStateLabel";
-            resources.ApplyResources(this.tssServerStateLabel, "tssServerStateLabel");
             // 
             // MainForm
             // 
