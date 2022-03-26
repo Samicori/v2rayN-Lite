@@ -116,20 +116,44 @@ namespace v2rayN.Handler
 
                         if (res != null)
                         {
-                            string itemId = config_.getItemId();
-                            ServerStatItem serverStatItem = GetServerStatItem(itemId);
+                            ulong totolUp = 0;
+                            ulong totolDown = 0;
+                            var updateList = new List<ServerStatItem>();
 
-                            //TODO: parse output
-                            ParseOutput(res.Stat, out ulong up, out ulong down);
+                            foreach (Stat stat in res.Stat)
+                            {
+                                string[] nStr = stat.Name.Trim().Split(">>>".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
 
-                            serverStatItem.todayUp += up;
-                            serverStatItem.todayDown += down;
-                            serverStatItem.totalUp += up;
-                            serverStatItem.totalDown += down;
+                                string name = nStr[1];
+                                string type = nStr[3];
+
+                                if (!name.StartsWith(Global.agentTag)) continue;
+
+                                ulong up = type == "uplink" ? (ulong)stat.Value : 0;
+                                ulong down = (type == "downlink") ? (ulong)stat.Value : 0;
+
+                                var outbound = config_.outbounds.Find(_ => _.tag == name);
+                                if (outbound == null) continue;
+
+                                var item = config_.vmess.Find(_ => _.symbol == outbound.serverSymbol);
+                                if (item == null) continue;
+
+                                ServerStatItem serverStatItem = GetServerStatItem(item.getItemId());
+
+                                serverStatItem.todayUp += up;
+                                serverStatItem.todayDown += down;
+                                serverStatItem.totalUp += up;
+                                serverStatItem.totalDown += down;
+
+                                updateList.Add(serverStatItem);
+
+                                totolUp += up;
+                                totolDown += totolDown;
+                            }
 
                             if (UpdateUI)
                             {
-                                updateFunc_(up, down, new List<ServerStatItem> { serverStatItem });
+                                updateFunc_(totolUp, totolDown, updateList);
                             }
                         }
                     }
@@ -246,17 +270,15 @@ namespace v2rayN.Handler
 
                 foreach (Stat stat in source)
                 {
-                    string name = stat.Name;
+                    string name = stat.Name.Trim();
                     long value = stat.Value;
                     string[] nStr = name.Split(">>>".ToCharArray(), StringSplitOptions.RemoveEmptyEntries);
                     string type = "";
 
-                    name = name.Trim();
-
                     name = nStr[1];
                     type = nStr[3];
 
-                    if (name == Global.agentTag)
+                    if (name.StartsWith(Global.agentTag))
                     {
                         if (type == "uplink")
                         {

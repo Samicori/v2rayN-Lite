@@ -7,6 +7,7 @@ using v2rayN.Base;
 using System.Linq;
 using v2rayN.Tool;
 using System.Net.NetworkInformation;
+using System.Windows.Forms;
 
 namespace v2rayN.Handler
 {
@@ -207,7 +208,8 @@ namespace v2rayN.Handler
             if (index >= 0)
             {// update
 
-                vmessItem.locaPort = GetAvailablePort(config.vmess.Select(_ => _.locaPort).ToArray(), config.vmess[index].locaPort);
+                if (vmessItem.localPort == 0)
+                    vmessItem.localPort = GetAvailablePort(config.vmess.Select(_ => _.localPort).ToArray(), config.vmess[index].localPort);
 
                 config.vmess[index] = vmessItem;
 
@@ -220,7 +222,8 @@ namespace v2rayN.Handler
             {// add
 
                 // 分配localport
-                vmessItem.locaPort = GetAvailablePort(config.vmess.Select(_ => _.locaPort).ToArray());
+                if (vmessItem.localPort == 0)
+                    vmessItem.localPort = GetAvailablePort(config.vmess.Select(_ => _.localPort).ToArray());
 
                 if (Utils.IsNullOrEmpty(vmessItem.allowInsecure))
                 {
@@ -313,7 +316,7 @@ namespace v2rayN.Handler
                 configVersion = config.vmess[index].configVersion,
                 address = config.vmess[index].address,
                 port = config.vmess[index].port,
-                locaPort = GetAvailablePort(config.vmess.Select(_ => _.locaPort).ToArray()),
+                localPort = GetAvailablePort(config.vmess.Select(_ => _.localPort).ToArray()),
                 id = config.vmess[index].id,
                 alterId = config.vmess[index].alterId,
                 security = config.vmess[index].security,
@@ -376,17 +379,30 @@ namespace v2rayN.Handler
                 var proxy = config.vmess[index];
 
                 // 检查port是否可用
-                var ingorePorts = config.vmess.Select(_ => _.locaPort).ToList();
+                var ingorePorts = config.inbound.Select(_ => _.localPort).ToList();
                 // 忽略列表里移除自己
-                ingorePorts.Remove(proxy.locaPort);
-                proxy.locaPort = GetAvailablePort(ingorePorts.ToArray(), proxy.locaPort); ;
+                ingorePorts.Remove(proxy.localPort);
+                var newPort = GetAvailablePort(ingorePorts.ToArray(), proxy.localPort);
+                if (newPort != proxy.localPort)
+                {
+                    var text = string.Format(UIRes.I18N("AutoPortText"), proxy.localPort, newPort);
+                    var caption = UIRes.I18N("Tips");
+                    if (MessageBox.Show(text, caption, MessageBoxButtons.YesNo) == DialogResult.Yes)
+                    {
+                        proxy.localPort = newPort;
+                    }
+                    else
+                    {
+                        continue;
+                    }
+                }
 
                 // 设置入站socks规则
                 var inItem = new InItem
                 {
                     tag = $"socks@{proxy.symbol}",
                     protocol = Global.InboundSocks,
-                    localPort = proxy.locaPort,
+                    localPort = proxy.localPort,
                     udpEnabled = true,
                     sniffingEnabled = true
                 };
@@ -468,6 +484,20 @@ namespace v2rayN.Handler
             ToJsonFile(config);
 
             return 0;
+        }
+
+        public static void StopAll(ref Config config)
+        {
+            // remove inbound
+            config.inbound.Clear();
+            // remove outbound
+            config.outbounds.Clear();
+            // remove routing
+            var zRouting = config.routings.FirstOrDefault(_ => _.remarks == "Z_ROUTING");
+            if (zRouting != null)
+            {
+                zRouting.rules.Clear();
+            }
         }
 
         /// <summary>
@@ -687,7 +717,8 @@ namespace v2rayN.Handler
             if (index >= 0)
             {
                 //修改
-                vmessItem.locaPort = GetAvailablePort(config.vmess.Select(_ => _.locaPort).ToArray(), config.vmess[index].locaPort);
+                if (vmessItem.localPort == 0)
+                    vmessItem.localPort = GetAvailablePort(config.vmess.Select(_ => _.localPort).ToArray(), config.vmess[index].localPort);
 
                 config.vmess[index] = vmessItem;
                 if (config.index.Equals(index))
@@ -698,7 +729,8 @@ namespace v2rayN.Handler
             else
             {
                 //添加
-                vmessItem.locaPort = GetAvailablePort(config.vmess.Select(_ => _.locaPort).ToArray());
+                if (vmessItem.localPort == 0)
+                        vmessItem.localPort = GetAvailablePort(config.vmess.Select(_ => _.localPort).ToArray());
 
                 config.vmess.Add(vmessItem);
                 if (config.vmess.Count == 1)
@@ -733,7 +765,8 @@ namespace v2rayN.Handler
             if (index >= 0)
             {
                 //修改
-                vmessItem.locaPort = GetAvailablePort(config.vmess.Select(_ => _.locaPort).ToArray(), config.vmess[index].locaPort);
+                if (vmessItem.localPort == 0)
+                    vmessItem.localPort = GetAvailablePort(config.vmess.Select(_ => _.localPort).ToArray(), config.vmess[index].localPort);
 
                 config.vmess[index] = vmessItem;
                 if (config.index.Equals(index))
@@ -744,7 +777,8 @@ namespace v2rayN.Handler
             else
             {
                 //添加
-                vmessItem.locaPort = GetAvailablePort(config.vmess.Select(_ => _.locaPort).ToArray());
+                if (vmessItem.localPort == 0)
+                    vmessItem.localPort = GetAvailablePort(config.vmess.Select(_ => _.localPort).ToArray());
 
                 config.vmess.Add(vmessItem);
                 if (config.vmess.Count == 1)
@@ -789,7 +823,8 @@ namespace v2rayN.Handler
             if (index >= 0)
             {
                 //修改
-                vmessItem.locaPort = GetAvailablePort(config.vmess.Select(_ => _.locaPort).ToArray(), config.vmess[index].locaPort);
+                if (vmessItem.localPort == 0)
+                    vmessItem.localPort = GetAvailablePort(config.vmess.Select(_ => _.localPort).ToArray(), config.vmess[index].localPort);
 
                 config.vmess[index] = vmessItem;
                 if (config.index.Equals(index))
@@ -800,7 +835,8 @@ namespace v2rayN.Handler
             else
             {
                 //添加
-                vmessItem.locaPort = GetAvailablePort(config.vmess.Select(_ => _.locaPort).ToArray());
+                if (vmessItem.localPort == 0)
+                    vmessItem.localPort = GetAvailablePort(config.vmess.Select(_ => _.localPort).ToArray());
 
                 config.vmess.Add(vmessItem);
                 if (config.vmess.Count == 1)
@@ -1109,7 +1145,8 @@ namespace v2rayN.Handler
             if (index >= 0)
             {
                 //修改
-                vmessItem.locaPort = GetAvailablePort(config.vmess.Select(_ => _.locaPort).ToArray(), config.vmess[index].locaPort);
+                if (vmessItem.localPort == 0)
+                    vmessItem.localPort = GetAvailablePort(config.vmess.Select(_ => _.localPort).ToArray(), config.vmess[index].localPort);
 
                 config.vmess[index] = vmessItem;
                 if (config.index.Equals(index))
@@ -1120,7 +1157,8 @@ namespace v2rayN.Handler
             else
             {
                 //添加
-                vmessItem.locaPort = GetAvailablePort(config.vmess.Select(_ => _.locaPort).ToArray());
+                if (vmessItem.localPort == 0)
+                    vmessItem.localPort = GetAvailablePort(config.vmess.Select(_ => _.localPort).ToArray());
 
                 if (Utils.IsNullOrEmpty(vmessItem.allowInsecure))
                 {
@@ -1501,11 +1539,21 @@ namespace v2rayN.Handler
         private static bool CheckPortAvailable(int port)
         {
             IPGlobalProperties ipProperties = IPGlobalProperties.GetIPGlobalProperties();
-            TcpConnectionInformation[] tcpConnInfoArray = ipProperties.GetActiveTcpConnections();
+            IPEndPoint[] ipEndPoints = ipProperties.GetActiveTcpListeners();
 
-            foreach (TcpConnectionInformation tcpi in tcpConnInfoArray)
+            foreach (IPEndPoint endPoint in ipEndPoints)
             {
-                if (tcpi.LocalEndPoint.Port == port)
+                if (endPoint.Port == port)
+                {
+                    return false;
+                }
+            }
+
+
+            ipEndPoints = ipProperties.GetActiveUdpListeners();
+            foreach (IPEndPoint endPoint in ipEndPoints)
+            {
+                if (endPoint.Port == port)
                 {
                     return false;
                 }

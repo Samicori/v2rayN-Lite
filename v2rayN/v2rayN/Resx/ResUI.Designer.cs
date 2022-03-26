@@ -70,6 +70,15 @@ namespace v2rayN.Resx {
         }
         
         /// <summary>
+        ///   查找类似 The local port {0} be used, change to {1}? 的本地化字符串。
+        /// </summary>
+        internal static string AutoPortText {
+            get {
+                return ResourceManager.GetString("AutoPortText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 Batch export subscription to clipboard successfully 的本地化字符串。
         /// </summary>
         internal static string BatchExportSubscriptionSuccessfully {
@@ -940,6 +949,15 @@ namespace v2rayN.Resx {
         internal static string TestMeOutput {
             get {
                 return ResourceManager.GetString("TestMeOutput", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 Tips 的本地化字符串。
+        /// </summary>
+        internal static string Tips {
+            get {
+                return ResourceManager.GetString("Tips", resourceCulture);
             }
         }
         

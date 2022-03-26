@@ -29,8 +29,8 @@ namespace v2rayN.Forms
             InitializeComponent();
 
             this.ShowInTaskbar = false;
-            this.WindowState = FormWindowState.Minimized;
-            HideForm();
+            this.WindowState = FormWindowState.Normal;
+            //HideForm();
             this.Text = Utils.GetVersion();
             Global.processJob = new Job();
 
@@ -77,15 +77,21 @@ namespace v2rayN.Forms
         private void MainForm_Shown(object sender, EventArgs e)
         {
             InitServersView();
-            RefreshServers();
+            
             // NOTE: remove routing display
             //RefreshRoutingsMenu();
             RestoreUI();
 
-            LoadV2ray();
+            if (!LoadV2ray())
+            {
+                // stop all
+                ConfigHandler.StopAll(ref config);
+            }
 
-            HideForm();
+            RefreshServers();
 
+            // Default to show v2ray
+            //HideForm();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -209,7 +215,7 @@ namespace v2rayN.Forms
             lvServers.Columns.Add(UIRes.I18N("LvTransportProtocol"), 60);
             lvServers.Columns.Add(UIRes.I18N("LvTLS"), 60);
             lvServers.Columns.Add(UIRes.I18N("LvSubscription"), 70);
-            lvServers.Columns.Add(UIRes.I18N("LvTestResults"), 200, HorizontalAlignment.Right);
+            lvServers.Columns.Add(UIRes.I18N("LvTestResults"), 160, HorizontalAlignment.Right);
 
             if (statistics != null && statistics.Enable)
             {
@@ -262,7 +268,7 @@ namespace v2rayN.Forms
                 }
                 ListViewItem lvItem = new ListViewItem(def);
                 Utils.AddSubItem(lvItem, EServerColName.configType.ToString(), ((EConfigType)item.configType).ToString());
-                Utils.AddSubItem(lvItem, EServerColName.localPort.ToString(), item.locaPort > 0 ? item.locaPort.ToString() : UIRes.I18N("LvAuto"));
+                Utils.AddSubItem(lvItem, EServerColName.localPort.ToString(), item.localPort > 0 ? item.localPort.ToString() : UIRes.I18N("LvAuto"));
                 Utils.AddSubItem(lvItem, EServerColName.remarks.ToString(), item.remarks);
                 Utils.AddSubItem(lvItem, EServerColName.address.ToString(), item.address);
                 Utils.AddSubItem(lvItem, EServerColName.port.ToString(), item.port.ToString());
@@ -472,7 +478,7 @@ namespace v2rayN.Forms
         /// <summary>
         /// 载入V2ray
         /// </summary>
-        private void LoadV2ray()
+        private bool LoadV2ray()
         {
             menuItemRestart.Enabled = false;
 
@@ -484,37 +490,32 @@ namespace v2rayN.Forms
             // 停止v2ray进程
             v2rayHandler.V2rayStop();
 
-            // 更新本地端口
-            foreach (var item in config.inbound)
-            {
-                // todo: 检查端口是否可用
-
-                if (item.localPort <= 0)
-                {
-                    // TODO：分配一个可用的大于10000的端口
-                    // item.localPort = 
-                }
-            }
-
             // 启动
-            v2rayHandler.LoadV2ray(config);
-
-            Global.reloadV2ray = false;
-            ConfigHandler.SaveConfig(ref config, false);
-            statistics?.SaveToFile();
-
-            ChangePACButtonStatus(config.sysProxyType);
-
-            if (config.outbounds.Count > 0)
+            if (v2rayHandler.LoadV2ray(config))
             {
-                notifyMain.Icon = Properties.Resources.V2rayN_Red;
+                Global.reloadV2ray = false;
+                ConfigHandler.SaveConfig(ref config, false);
+                statistics?.SaveToFile();
+
+                ChangePACButtonStatus(config.sysProxyType);
+
+                if (config.outbounds.Count > 0)
+                {
+                    notifyMain.Icon = Properties.Resources.V2rayN_Red;
+                }
+                else
+                {
+                    notifyMain.Icon = Properties.Resources.V2rayN;
+                }
+
+                menuItemRestart.Enabled = true;
+
+                return true;
             }
             else
             {
-                notifyMain.Icon = Properties.Resources.V2rayN;
+                return false;
             }
-
-            menuItemRestart.Enabled = true;
         }
 
         /// <summary>
@@ -887,8 +888,14 @@ namespace v2rayN.Forms
 
             if (ConfigHandler.SetActiveServer(ref config, indexs) == 0)
             {
-                LoadV2ray();
-                RefreshServers();
+                if (LoadV2ray())
+                {
+                    RefreshServers();
+                }
+                else
+                {
+                    ConfigHandler.StopServer(ref config, indexs);
+                }
             }
             return 0;
         }

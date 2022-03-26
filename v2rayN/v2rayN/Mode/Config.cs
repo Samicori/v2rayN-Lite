@@ -454,7 +454,7 @@ namespace v2rayN.Mode
             testResult = string.Empty;
             subid = string.Empty;
             flow = string.Empty;
-            locaPort = 0;
+            localPort = 0;
         }
 
         public string getSummary()
@@ -678,7 +678,7 @@ namespace v2rayN.Mode
         /// <summary>
         /// 本地端口
         /// </summary>
-        public int locaPort
+        public int localPort
         {
             get; set;
         }

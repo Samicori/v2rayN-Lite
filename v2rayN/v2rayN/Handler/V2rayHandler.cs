@@ -37,7 +37,7 @@ namespace v2rayN.Handler
         /// <summary>
         /// 载入V2ray
         /// </summary>
-        public void LoadV2ray(Config config)
+        public bool LoadV2ray(Config config)
         {
             if (config.coreType == ECoreType.v2fly_core)
             {
@@ -69,9 +69,11 @@ namespace v2rayN.Handler
                     ShowMsg(true, msg);
                     // 不需要关闭已有进程
                     //V2rayRestart();
-                    V2rayStart();
+                    return V2rayStart();
                 }
             }
+
+            return false;
         }
 
         /// <summary>
@@ -203,14 +205,14 @@ namespace v2rayN.Handler
         /// <summary>
         /// V2ray启动
         /// </summary>
-        private void V2rayStart()
+        private bool V2rayStart()
         {
             ShowMsg(false, string.Format(UIRes.I18N("StartService"), DateTime.Now.ToString()));
 
             try
             {
                 string fileName = V2rayFindexe();
-                if (fileName == "") return;
+                if (fileName == "") return false;
 
                 Process p = new Process
                 {
@@ -245,12 +247,15 @@ namespace v2rayN.Handler
                 }
 
                 Global.processJob.AddProcess(p.Handle);
+
+                return true;
             }
             catch (Exception ex)
             {
                 Utils.SaveLog(ex.Message, ex);
                 string msg = ex.Message;
                 ShowMsg(true, msg);
+                return false;
             }
         }
         /// <summary>

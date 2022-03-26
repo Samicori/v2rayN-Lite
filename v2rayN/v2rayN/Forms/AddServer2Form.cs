@@ -33,7 +33,7 @@ namespace v2rayN.Forms
             vmessItem = config.vmess[EditIndex];
             txtRemarks.Text = vmessItem.remarks;
             txtAddress.Text = vmessItem.address;
-            txtLocalPort.Text = vmessItem.locaPort.ToString();
+            txtLocalPort.Text = vmessItem.localPort.ToString();
             txtAddress.ReadOnly = true;
         }
 
@@ -63,7 +63,7 @@ namespace v2rayN.Forms
             }
 
             vmessItem.remarks = remarks;
-            vmessItem.locaPort = Utils.ToInt(localPort);
+            vmessItem.localPort = Utils.ToInt(localPort);
 
             if (ConfigHandler.EditCustomServer(ref config, vmessItem, EditIndex) == 0)
             {

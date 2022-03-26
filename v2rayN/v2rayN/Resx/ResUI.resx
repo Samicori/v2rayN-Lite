@@ -448,4 +448,10 @@
   <data name="ServerState" xml:space="preserve">
     <value>Servers: {0}  Active: {1}</value>
   </data>
+  <data name="AutoPortText" xml:space="preserve">
+    <value>The local port {0} be used, change to {1}?</value>
+  </data>
+  <data name="Tips" xml:space="preserve">
+    <value>Tips</value>
+  </data>
 </root>

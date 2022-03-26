@@ -448,4 +448,10 @@
   <data name="ServerState" xml:space="preserve">
     <value>服务器：{0}    已连接：{1}</value>
   </data>
+  <data name="AutoPortText" xml:space="preserve">
+    <value>端口{0}被使用，需要自动切换至{1}吗？</value>
+  </data>
+  <data name="Tips" xml:space="preserve">
+    <value>提示</value>
+  </data>
 </root>

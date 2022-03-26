@@ -34,7 +34,7 @@ namespace v2rayN.Forms
         {
             txtAddress.Text = vmessItem.address;
             txtPort.Text = vmessItem.port.ToString();
-            txtLocalPort.Text = vmessItem.locaPort.ToString();
+            txtLocalPort.Text = vmessItem.localPort.ToString();
             txtId.Text = vmessItem.id;
             cmbFlow.Text = vmessItem.flow;
             txtRemarks.Text = vmessItem.remarks;
@@ -92,7 +92,7 @@ namespace v2rayN.Forms
 
             vmessItem.address = address;
             vmessItem.port = Utils.ToInt(port);
-            vmessItem.locaPort= Utils.ToInt(locaPort);
+            vmessItem.localPort= Utils.ToInt(locaPort);
             vmessItem.id = id;
             vmessItem.flow = flow;
             vmessItem.remarks = remarks;
